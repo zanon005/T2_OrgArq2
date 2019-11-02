@@ -75,7 +75,9 @@ public class TelaCaracProgram{
                 alert.setHeaderText("O arquivo selecionado não é válido");
                 alert.setContentText("Por favor, selecione um arquivo válido!");
             }else{
-                
+                CaracterizacaoPrograma carac = new CaracterizacaoPrograma(file);
+                carac.leArquivo();
+                System.out.println("TESTEEE");
             }
         });
 
