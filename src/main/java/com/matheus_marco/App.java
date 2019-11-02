@@ -1,13 +1,13 @@
 package com.matheus_marco;
 
-//import javafx.application.Application;
-//import javafx.stage.Stage;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
-public class App {
+public class App extends Application{
     
-    //private TelaCaracProgram telaCaracProgram;
+    private TelaCaracProgram telaCaracProgram;
 
-    /*@Override
+    @Override
     public void start(Stage primaryStage){
         
         primaryStage.setTitle("T2 de Org. Arq II");
@@ -15,11 +15,11 @@ public class App {
         telaCaracProgram = new TelaCaracProgram(primaryStage);
         primaryStage.setScene(telaCaracProgram.getTelaCaracProgram());
         primaryStage.show();
-    }*/
+    }
 
 
     public static void main( String args[] ){
-        //launch(args);
-        System.out.println("VAI SE FODEEEEEEEEER");
+        launch(args);
+        System.out.println("Nao funciona essa bagaca ");
     }
 }

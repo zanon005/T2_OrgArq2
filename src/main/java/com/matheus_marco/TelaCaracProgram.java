@@ -2,7 +2,7 @@ package com.matheus_marco;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-//import java.io.File;
+import java.io.File;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -16,18 +16,18 @@ import javafx.scene.text.Text;
 
 public class TelaCaracProgram{
 
-    //private Stage mainStage;
+    private Stage mainStage;
     private Scene cenaCaracProgram;
 
     final FileChooser fileChooser = new FileChooser();
     final Button openFileButton = new Button("Abrir arquivo");
-    //private File file;
+    private File file;
 
     public TelaCaracProgram(Stage anStage){
-        //this.mainStage = anStage;
+        this.mainStage = anStage;
     }
 
-    //public void setFile(File file){this.file = file;}
+    public void setFile(File file){this.file = file;}
 
     public Scene getTelaCaracProgram(){
         GridPane grid =  new GridPane();
@@ -38,7 +38,7 @@ public class TelaCaracProgram{
         grid.setGridLinesVisible(true);
         
         Text sceneTitle = new Text("Caracterizacao do programa!");
-        //sceneTitle.setId("welcome-text");
+        sceneTitle.setId("welcome-text");
         sceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         grid.add(sceneTitle, 0, 0); //0,0,2,1
 
@@ -48,9 +48,9 @@ public class TelaCaracProgram{
         Label arquivo = new Label("Arquivo:");
         grid.add(arquivo, 0, 3);
 
-        /*openFileButton.setOnAction(e ->{
+        openFileButton.setOnAction(e ->{
             this.file = fileChooser.showOpenDialog(mainStage);
-        });*/
+        });
         grid.add(openFileButton, 1, 3);
 
         Button generateAdresses = new Button("Gerar enderecos!");
