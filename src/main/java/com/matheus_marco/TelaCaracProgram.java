@@ -18,8 +18,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-
-public class TelaCaracProgram{
+public class TelaCaracProgram {
 
     private Stage mainStage;
     private Scene cenaCaracProgram;
@@ -28,26 +27,28 @@ public class TelaCaracProgram{
     final Button openFileButton = new Button("Abrir arquivo");
     private File file;
 
-    public TelaCaracProgram(Stage anStage){
+    public TelaCaracProgram(Stage anStage) {
         this.mainStage = anStage;
         this.file = null;
     }
 
-    public void setFile(File file){this.file = file;}
+    public void setFile(File file) {
+        this.file = file;
+    }
 
-    public Scene getTelaCaracProgram(){
-        GridPane grid =  new GridPane();
+    public Scene getTelaCaracProgram() {
+        GridPane grid = new GridPane();
         grid.setFocusTraversable(true);
         grid.setAlignment(Pos.CENTER);
-		grid.setHgap(10);
-		grid.setVgap(10);
-		grid.setPadding(new Insets(25, 25, 25, 25));
-        //grid.setGridLinesVisible(true);
-        
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+        // grid.setGridLinesVisible(true);
+
         Text sceneTitle = new Text("Caracterizacao do programa!");
         sceneTitle.setId("welcome-text");
         sceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        grid.add(sceneTitle, 0, 0); //0,0,2,1
+        grid.add(sceneTitle, 0, 0); // 0,0,2,1
 
         Text helpPickFileMessage = new Text("Escolha o arquivo que caracterizara o programa!");
         grid.add(helpPickFileMessage, 0, 2);
@@ -56,12 +57,12 @@ public class TelaCaracProgram{
         hbArquivo.setAlignment(Pos.CENTER);
 
         Label arquivo = new Label("Arquivo:");
-        //grid.add(arquivo, 0, 3);
+        // grid.add(arquivo, 0, 3);
 
-        openFileButton.setOnAction(e ->{
+        openFileButton.setOnAction(e -> {
             this.file = fileChooser.showOpenDialog(mainStage);
         });
-        //grid.add(openFileButton, 1, 3);
+        // grid.add(openFileButton, 1, 3);
         hbArquivo.getChildren().addAll(arquivo, openFileButton);
         grid.add(hbArquivo, 0, 3);
 
@@ -69,20 +70,28 @@ public class TelaCaracProgram{
         grid.add(generateAdresses, 0, 4);
         GridPane.setHalignment(generateAdresses, HPos.CENTER);
         generateAdresses.setOnAction(e -> {
-            if(this.file == null){
+            if (this.file == null) {
                 Alert alert = new Alert(AlertType.WARNING);
                 alert.setTitle("Arquivo invlálido!");
                 alert.setHeaderText("O arquivo selecionado não é válido");
                 alert.setContentText("Por favor, selecione um arquivo válido!");
-            }else{
+                alert.showAndWait();
+            } else {
+                // Se o file esta ok, entao tenta gerar a saida!.
                 CaracterizacaoPrograma carac = new CaracterizacaoPrograma(file);
-                carac.leArquivo();
-                System.out.println("TESTEEE");
+                try {
+                    carac.leArquivo();
+                    TelaCaracCache telaCarac = new TelaCaracCache(mainStage, cenaCaracProgram);
+                    Scene scene = telaCarac.getTelaCaracCache();
+				    mainStage.setScene(scene);
+                } catch (FileNotInCorrectFormatException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
         cenaCaracProgram = new Scene(grid);
-        return cenaCaracProgram;
+        return this.cenaCaracProgram;
     }
 
 }

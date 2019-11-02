@@ -15,25 +15,35 @@ public class CaracterizacaoPrograma {
     private int qtdEnderecos;
     private int[] enderecos;
     
-
     public CaracterizacaoPrograma(File file) {
         this.file = file;
     }
 
-    public void leArquivo() {
+    public void leArquivo() throws FileNotInCorrectFormatException {
         try {
             scanner = new Scanner(file);
         } catch (FileNotFoundException e){
             e.printStackTrace();
         }
 	    String line[] =  scanner.nextLine().split(":"); //primeira linha, com "ep: 100" por exemplo.
-	    if(line[0] != "ep"){/*formato errado de arquivo;*/}
+	    if(!line[0].equals("ep")){
+            /*formato errado de arquivo;*/
+            throw new FileNotInCorrectFormatException("Arquivo de entrada nao esta no formato correto!");
+        }
 	    // trow error, lidar na tela!
 	    qtdEnderecos = Integer.parseInt(line[1]);
         enderecos = new int[qtdEnderecos];
         LinkedList<String> arquivo = new LinkedList<>();
 	    while(scanner.hasNextLine()){
             String lineX = scanner.nextLine();
+            String aux[] = lineX.split(":");
+            if(aux[0].equals("ep")){
+                System.out.println("ERRO EP DUAS VEZES");
+                throw new FileNotInCorrectFormatException("Arquivo de entrada nao esta no formato correto!");
+            }else if(!aux[0].equals("ji") && !aux[0].equals("bi")){
+                System.out.println("ERRO NAO EH JI NEM BI");
+                throw new FileNotInCorrectFormatException("Arquivo de entrada nao esta no formato correto!");
+            }
             arquivo.add(lineX);
         }
         escreveArquivo(arquivo);
@@ -50,18 +60,14 @@ public class CaracterizacaoPrograma {
                 fr.write("\n");
                 for (String line : arquivo) {
                     String linha[] = line.split(":");
-                    //System.out.println(line);
                     //Ver se da match no endereco
                     if(Integer.parseInt(linha[1]) == auxI){
                         //Ver qual eh o tipo de instrucao, 'BI' or 'JI'
-                        //System.out.println("Linha = "+linha[0]);
                         if(linha[0].equals("ji")){
-                            //System.out.println("Eh JI");
                             auxI = Integer.parseInt(linha[2]);
                             fr.write(String.valueOf(auxI));
                             fr.write("\n");
                         }else{
-                            //System.out.println("Eh BI");
                             int valor = new Random().nextInt(100) + 1;
                             if(valor <= Integer.parseInt(linha[3])){
                                 auxI = Integer.parseInt(linha[2]);
