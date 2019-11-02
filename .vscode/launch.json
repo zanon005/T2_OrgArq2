@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - App",
+            "request": "launch",
+            "mainClass": "com.matheus_marco.App",
+            "projectName": "T2_OrqArq2"
+        }
+    ]
+}
