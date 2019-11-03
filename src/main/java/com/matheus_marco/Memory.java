@@ -29,7 +29,10 @@ public class Memory{
         this.tamBloco = tamBloco;
         this.tamPalavra = tamPalavra;
         this.qtdConjuntos = qtdConjuntos;
+        //tem que ajeitar essa pol nao sei qual a instancia correta
+        //randomica ou LRU
         this.pol = pol;
+        //bitsBloco localiza qual bloco o dado pertence! 
         this.bitsBloco = tamPalavra * tamBloco + 1; //bitsBloco gera quantidade de bits por bloco
         this.acessos =0;
         this.hit=0;
@@ -55,25 +58,45 @@ public class Memory{
 
     public void start(){
         //Verificar '8' magico, calcular bytes por linha da mem corretamente
+        //'8' não é magico so faço um conversao para bits de bytes
         // nLinhasMem = SizeMemBytes / tamBytesLinha
+        
         // QUANTOS CONJUNTOS ASSOCIATIVOS TEM ?  COMO CALCULAR ??
-        //bitsBloco localiza qual bloco o dado pertence! 
+        // Não sei responder tem que ver com o sor, msm
+
+   
         while((bitsBloco * linhas) <= (tamMemTotal * 8)){
             linhas *= 2;
         }
 
         linhas /= 2;
         //tem que ver se fiz isso certo foi de cabeça
+        //ta ok!
         tamCache = (bitsBloco * linhas) / 8;
         utilCache = tamCache / tamMemTotal * 100;
 
         //como calcula a tag é asssim?
+        //é desse jeito mesmo
+        //Fiz gambiarra para converte para double
         qtdTag = bitsTag(repBits(tamBloco*1.00), repBits(qtdConjuntos*1.00));
 
         //Como anteriormento ver como cria uma lista de lista em java
         //inicializar zerando tudo na cache
-
-
+        //Quero fazer isso ver com o zanon
+        /*
+        cache = [[] for i in range(linhas)]
+        */
+        for(int i=0; i<linhas;i++){
+            String aux = "";
+            int cont = 0;
+            //Concaternar zeros 
+            while(cont < tamPalavra){
+                aux += "0";
+                cont++;
+            }
+            cache.get(i).add(aux);
+        }
+        
         int offSet = linhas / qtdConjuntos;
 
 
@@ -84,11 +107,38 @@ public class Memory{
 
         //Como anteriormento ver como cria uma lista de lista em java
         //inicializer zerando tudo em conj
+       /*
+        self.conj = [[] for i in range(self.qtdConjuntos)]
+       */
+       for(int i=0; i < qtdConjuntos; i++){
+            //FICOU DO JEITO BURRO RESOLVER MAIS TARDE 
+            String aux = "";
+            int cont = 0;
+            //Concaternar zeros 
+            while(cont < qtdConjuntos){
+                aux += "0";
+                cont++;
+            }
+           for(int j=0; j<offSet; j++){
+               conj.get(i).add(aux);
+           }
+       }
+    }
+
+    //Ver como implementar um complemento de 2
+    //inteiro para binario
+    private String int2bs(String s, int n){
+        return " ";
     }
 
     public void acessoMemoria(String endereco){
         String conteudo = endereco;
-        endereco 
+        String end = int2bs(endereco, 32);
+        
+        //Ver se pega o ultimo bits é incluso ou nao !!
+        String tag = end.substring(0, qtdTag);
+        int cont = qtdTag;
+        //Parei aqui realmente tenho que ver com o sor se entendi corretamente essa parte !!!
     }
 
     public String toString(){
