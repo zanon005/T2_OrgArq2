@@ -2,7 +2,7 @@ package com.matheus_marco;
 
 import java.util.Random;
 
-public class Randomica implements PoliticaSubstituicao{
+public class Randomica extends PoliticaSubstituicao{
 
     private int qtdConjuntos;
     private int linhas;

@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -66,9 +67,18 @@ public class TelaCaracProgram {
         hbArquivo.getChildren().addAll(arquivo, openFileButton);
         grid.add(hbArquivo, 0, 3);
 
+        HBox hbMaxEnderecos = new HBox();
+        hbMaxEnderecos.setAlignment(Pos.CENTER);
+        Label nMaxEnderecos = new Label("Número máximo de endereços:");
+        nMaxEnderecos.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
+        TextField tfMaxEnderecos = new TextField();
+        tfMaxEnderecos.setPrefWidth(80);
+        hbMaxEnderecos.getChildren().addAll(nMaxEnderecos, tfMaxEnderecos);
+        grid.add(hbMaxEnderecos, 0, 4); 
+
         Button generateAdresses = new Button("Gerar enderecos!");
         generateAdresses.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
-        grid.add(generateAdresses, 0, 4);
+        grid.add(generateAdresses, 0, 5);
         GridPane.setHalignment(generateAdresses, HPos.CENTER);
         generateAdresses.setOnAction(e -> {
             if (this.file == null) {
@@ -79,14 +89,35 @@ public class TelaCaracProgram {
                 alert.showAndWait();
             } else {
                 // Se o file esta ok, entao tenta gerar a saida!.
-                CaracterizacaoPrograma carac = new CaracterizacaoPrograma(file);
                 try {
+                    //Tenta converter o campo de texto com o numero max de enderecos p/ gerar.
+                    int numMaxEnderecos = Integer.parseInt(tfMaxEnderecos.getText());
+                    CaracterizacaoPrograma carac = new CaracterizacaoPrograma(file, numMaxEnderecos);
                     carac.leArquivo();
                     TelaCaracCache telaCarac = new TelaCaracCache(mainStage, cenaCaracProgram);
                     Scene scene = telaCarac.getTelaCaracCache();
 				    mainStage.setScene(scene);
                 } catch (FileNotInCorrectFormatException e1) {
-                    e1.printStackTrace();
+                    Alert alert = new Alert(AlertType.WARNING);
+                    alert.setTitle("Arquivo invlálido!");
+                    alert.setHeaderText("O arquivo selecionado não é válido");
+                    alert.setContentText("Por favor, selecione um que esteja no formato válido!\n"+
+                    "exemplo:\n"+
+                    "ep:200\n"+
+                    "ji:20:50\n"+
+                    "bi:55:25:20\n"+
+                    "ji:90:100\n"+
+                    "ji:100:110\n"+
+                    "bi:85:121:10\n"+
+                    "ji:115:80\n"+
+                    "   ...     ");
+                    alert.showAndWait();
+                } catch (NumberFormatException e2) {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Número máximo de endereços inválido!");
+                    alert.setHeaderText("Digite um número válido para o máximo de endereços gerados");
+                    alert.setContentText("Digite valores maiores que zero!, 'nMaxEnderecos >0' ");
+                    alert.showAndWait();
                 }
             }
         });

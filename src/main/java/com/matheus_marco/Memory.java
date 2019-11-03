@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Memory{
 
+    private PoliticaSubstituicao pol;
     private int tamMemTotal;
     private int tamBloco;
     private int tamPalavra;
     private int qtdConjuntos;
-    private PoliticaSubstituicao pol;
     
     private int bitsBloco;
     private int acessos;

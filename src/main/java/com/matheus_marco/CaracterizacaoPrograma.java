@@ -13,10 +13,11 @@ public class CaracterizacaoPrograma {
     private File file;
     Scanner scanner;
     private int qtdEnderecos;
-    private int[] enderecos;
+    private int numMaxEnderecos;
     
-    public CaracterizacaoPrograma(File file) {
+    public CaracterizacaoPrograma(File file, int numMaxEnderecos) {
         this.file = file;
+        this.numMaxEnderecos = numMaxEnderecos;
     }
 
     public void leArquivo() throws FileNotInCorrectFormatException {
@@ -32,7 +33,6 @@ public class CaracterizacaoPrograma {
         }
 	    // trow error, lidar na tela!
 	    qtdEnderecos = Integer.parseInt(line[1]);
-        enderecos = new int[qtdEnderecos];
         LinkedList<String> arquivo = new LinkedList<>();
 	    while(scanner.hasNextLine()){
             String lineX = scanner.nextLine();
@@ -53,11 +53,15 @@ public class CaracterizacaoPrograma {
         File file = new File("enderecos.txt");
         FileWriter fr = null;
         try {
+            int numTotalLinhas = 0;
             fr = new FileWriter(file);
             int auxI = 0;
             while(auxI != qtdEnderecos){
                 fr.write(String.valueOf(auxI));
                 fr.write("\n");
+                numTotalLinhas++;
+                //Verificacao se numero max de enderecos nao foi extrapolado!.
+                if(numTotalLinhas >= numMaxEnderecos){break;}
                 for (String line : arquivo) {
                     String linha[] = line.split(":");
                     //Ver se da match no endereco
@@ -67,12 +71,18 @@ public class CaracterizacaoPrograma {
                             auxI = Integer.parseInt(linha[2]);
                             fr.write(String.valueOf(auxI));
                             fr.write("\n");
+                            numTotalLinhas++;
+                            //Verificacao se numero max de enderecos nao foi extrapolado!.
+                            if(numTotalLinhas >= numMaxEnderecos){break;}
                         }else{
                             int valor = new Random().nextInt(100) + 1;
                             if(valor <= Integer.parseInt(linha[3])){
                                 auxI = Integer.parseInt(linha[2]);
                                 fr.write(String.valueOf(auxI));
                                 fr.write("\n");
+                                numTotalLinhas++;
+                                //Verificacao se numero max de enderecos nao foi extrapolado!.
+                                if(numTotalLinhas >= numMaxEnderecos){break;}
                             }
                         }
                     }

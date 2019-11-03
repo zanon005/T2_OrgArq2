@@ -1,9 +1,12 @@
 package com.matheus_marco;
 
-public interface PoliticaSubstituicao{
+public class PoliticaSubstituicao{
 
-    public int getIndex(int indexConj);
+    public PoliticaSubstituicao(){
 
-    public void updateIndex(int indexConj, int index);
+    }
+    public int getIndex(int indexConj){ return 0;};
+
+    public void updateIndex(int indexConj, int index){};
     
 }

@@ -2,7 +2,7 @@ package com.matheus_marco;
 
 import java.util.ArrayList;
 
-public class LRU implements PoliticaSubstituicao{
+public class LRU extends PoliticaSubstituicao{
 
     private int qtdConjuntos;
     private int linhas;
@@ -18,6 +18,7 @@ public class LRU implements PoliticaSubstituicao{
         this.linhas = linhas;
         this.control = new ArrayList<>();
     }
+
     @Override
     public int getIndex(int indexConj) {
         int menorTempo = 0;
