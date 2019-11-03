@@ -15,8 +15,8 @@ public class Memory{
     private int hit;
     private int miss;
 
-    private ArrayList<String> cache;
-    private ArrayList<String> conj;
+    private ArrayList<ArrayList<String>> cache;
+    private ArrayList<ArrayList<String>> conj;
     private int linhas;
 
     private long tempoMedio;
@@ -30,7 +30,7 @@ public class Memory{
         this.tamPalavra = tamPalavra;
         this.qtdConjuntos = qtdConjuntos;
         this.pol = pol;
-        this.bitsBloco = tamPalavra * tamBloco + 1; //A resolver!!!!!!!!!!
+        this.bitsBloco = tamPalavra * tamBloco + 1; //bitsBloco gera quantidade de bits por bloco
         this.acessos =0;
         this.hit=0;
         this.miss=0;
@@ -41,12 +41,14 @@ public class Memory{
         
     }
 
-
+    //quantos bits tem para representar a tag,i.e, o que sobrar é da tag
     public int bitsTag(int repBloco, int repOutro){
         return 32 - repBloco - repOutro;
-        //VERIFICAR TAMANHO DE TAG MAXIMO!
-    }
 
+    }
+    
+
+    //Metodo diz quantos bits vai ser utilizado
     public int repBits(Double bits){
         return (int) Math.floor(Math.log(bits));
     }
@@ -54,7 +56,8 @@ public class Memory{
     public void start(){
         //Verificar '8' magico, calcular bytes por linha da mem corretamente
         // nLinhasMem = SizeMemBytes / tamBytesLinha
-        // QUANTOS CONJUNTOS ASSOCIATIVOS TEM ?  COMO CALCULAR ?? 
+        // QUANTOS CONJUNTOS ASSOCIATIVOS TEM ?  COMO CALCULAR ??
+        //bitsBloco localiza qual bloco o dado pertence! 
         while((bitsBloco * linhas) <= (tamMemTotal * 8)){
             linhas *= 2;
         }
@@ -81,6 +84,11 @@ public class Memory{
 
         //Como anteriormento ver como cria uma lista de lista em java
         //inicializer zerando tudo em conj
+    }
+
+    public void acessoMemoria(String endereco){
+        String conteudo = endereco;
+        endereco 
     }
 
     public String toString(){
