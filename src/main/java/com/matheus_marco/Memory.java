@@ -115,7 +115,7 @@ public class Memory{
             String aux = "";
             int cont = 0;
             //Concaternar zeros 
-            while(cont < qtdConjuntos){
+            while(cont < qtdConjuntos){ 
                 aux += "0";
                 cont++;
             }
