@@ -24,7 +24,7 @@ public class LRU implements PoliticaSubstituicao{
         // ver com o zanon nao manjo de java bem kkk
         // se eu der indexConj zero vai para arraylist zero?
         for(int i=1; i < linhas; i++){
-            if (control.get(indexConj).get(i) < control.get(indexConj).get(i)){
+            if (control.get(indexConj).get(i) < control.get(indexConj).get(menorTempo)){
                 menorTempo = i;
             }
         }

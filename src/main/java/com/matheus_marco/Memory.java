@@ -30,7 +30,7 @@ public class Memory{
         this.tamPalavra = tamPalavra;
         this.qtdConjuntos = qtdConjuntos;
         this.pol = pol;
-        this.bitsBloco = tamPalavra * tamBloco + 1;
+        this.bitsBloco = tamPalavra * tamBloco + 1; //A resolver!!!!!!!!!!
         this.acessos =0;
         this.hit=0;
         this.miss=0;
@@ -44,12 +44,17 @@ public class Memory{
 
     public int bitsTag(int repBloco, int repOutro){
         return 32 - repBloco - repOutro;
+        //VERIFICAR TAMANHO DE TAG MAXIMO!
     }
 
     public int repBits(Double bits){
         return (int) Math.floor(Math.log(bits));
     }
+
     public void start(){
+        //Verificar '8' magico, calcular bytes por linha da mem corretamente
+        // nLinhasMem = SizeMemBytes / tamBytesLinha
+        // QUANTOS CONJUNTOS ASSOCIATIVOS TEM ?  COMO CALCULAR ?? 
         while((bitsBloco * linhas) <= (tamMemTotal * 8)){
             linhas *= 2;
         }

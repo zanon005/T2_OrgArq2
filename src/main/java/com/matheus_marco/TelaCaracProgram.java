@@ -43,30 +43,31 @@ public class TelaCaracProgram {
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
-        // grid.setGridLinesVisible(true);
 
         Text sceneTitle = new Text("Caracterizacao do programa!");
+        sceneTitle.setUnderline(true);
         sceneTitle.setId("welcome-text");
         sceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         grid.add(sceneTitle, 0, 0); // 0,0,2,1
 
         Text helpPickFileMessage = new Text("Escolha o arquivo que caracterizara o programa!");
+        helpPickFileMessage.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
         grid.add(helpPickFileMessage, 0, 2);
 
         HBox hbArquivo = new HBox();
         hbArquivo.setAlignment(Pos.CENTER);
 
         Label arquivo = new Label("Arquivo:");
-        // grid.add(arquivo, 0, 3);
+        arquivo.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
 
         openFileButton.setOnAction(e -> {
             this.file = fileChooser.showOpenDialog(mainStage);
         });
-        // grid.add(openFileButton, 1, 3);
         hbArquivo.getChildren().addAll(arquivo, openFileButton);
         grid.add(hbArquivo, 0, 3);
 
         Button generateAdresses = new Button("Gerar enderecos!");
+        generateAdresses.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
         grid.add(generateAdresses, 0, 4);
         GridPane.setHalignment(generateAdresses, HPos.CENTER);
         generateAdresses.setOnAction(e -> {

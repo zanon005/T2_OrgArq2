@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -32,8 +33,9 @@ public class TelaCaracCache {
         // grid.setGridLinesVisible(true);
 
         Text sceneTitle = new Text("Definição da memória cache!");
+        sceneTitle.setUnderline(true);
         sceneTitle.setId("welcome-text");
-        sceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        sceneTitle.setFont(Font.font("Tahoma", FontWeight.BLACK, 20));
         grid.add(sceneTitle, 0, 0); // 0,0,2,1
 
         /*
@@ -47,31 +49,46 @@ public class TelaCaracCache {
         int numVias = 0;
 
         Text onlyNumbers = new Text("Digite somente números ou não irá poder prosseguir!");
-        onlyNumbers.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        onlyNumbers.setFont(Font.font("Tahoma", FontWeight.BLACK, 16));
         grid.add(onlyNumbers, 0, 1);
 
-        Label BytesCache = new Label("Tamanho em bytes da cache:");
-        TextField textBytesCache = new TextField();
-        grid.add(BytesCache, 0, 2);
-        grid.add(textBytesCache, 1, 2);
+        GridPane gridCamposTexto = new GridPane();
+        gridCamposTexto.setAlignment(Pos.CENTER);
+        gridCamposTexto.setHgap(10);
+        gridCamposTexto.setVgap(10);
+        gridCamposTexto.setPadding(new Insets(25, 25, 25, 25));
 
-        Label palavrasByBlock = new Label("Numero de palavras por bloco:");
-        TextField textpalavrasByBlock = new TextField();
-        grid.add(palavrasByBlock, 0, 3);
-        grid.add(textpalavrasByBlock, 1, 3);
+        Label bytesCache = new Label("Tamanho em bytes da cache:");
+        bytesCache.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
+        TextField fieldBytesCache = new TextField();
+        gridCamposTexto.add(bytesCache, 0, 0);
+        gridCamposTexto.add(fieldBytesCache, 1, 0);
+
+        Label palavrasByBlock = new Label("Número de palavras por bloco:");
+        palavrasByBlock.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
+        TextField fieldPalavrasByBlock = new TextField();
+        gridCamposTexto.add(palavrasByBlock, 0, 1);
+        gridCamposTexto.add(fieldPalavrasByBlock, 1, 1);
 
         Label sizeWord = new Label("Tamanho de cada palavra:");
-        TextField textsizeWord = new TextField();
-        grid.add(sizeWord, 0, 4);
-        grid.add(textsizeWord, 1, 4);
+        sizeWord.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
+        TextField fieldSizeWord = new TextField();
+        gridCamposTexto.add(sizeWord, 0, 2);
+        gridCamposTexto.add(fieldSizeWord, 1, 2);
 
-        Label nVias = new Label("Numero de vias:");
-        TextField textnVias = new TextField();
-        grid.add(nVias, 0, 5);
-        grid.add(textnVias, 1, 5);
+        Label nVias = new Label("Número de vias:");
+        nVias.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
+        TextField fieldNumVias = new TextField();
+        gridCamposTexto.add(nVias, 0, 3);
+        gridCamposTexto.add(fieldNumVias, 1, 3);
+        
+        grid.add(gridCamposTexto, 0, 2);
 
         Button buttonGo = new Button("Go!");
-        grid.add(buttonGo, 0, 6);
+        buttonGo.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
+        buttonGo.setPrefWidth(80);
+        buttonGo.setAlignment(Pos.CENTER);
+        grid.add(buttonGo, 0, 3);
 
         cenaCaracCache = new Scene(grid);
         return this.cenaCaracCache;
