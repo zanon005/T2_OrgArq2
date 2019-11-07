@@ -2,7 +2,7 @@ package com.matheus_marco;
 
 import java.util.Random;
 
-public class Randomica extends PoliticaSubstituicao{
+public class Randomica implements PoliticaSubstituicao{
 
     private int qtdConjuntos;
     private int linhas;
@@ -12,12 +12,12 @@ public class Randomica extends PoliticaSubstituicao{
         this.linhas = linhas;
     }
 
-    @Override
+    //@Override
     public int getIndex(int indexConj) {
         return new Random().nextInt(linhas-1);
     }
 
-    @Override
+    //@Override
     public void updateIndex(int indexConj, int index) {
 
     }
