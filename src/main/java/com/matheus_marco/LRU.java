@@ -4,18 +4,11 @@ import java.util.ArrayList;
 
 public class LRU implements PoliticaSubstituicao{
 
-    private int qtdConjuntos;
+    private int conjuntoEscolhido;
     private int linhas;
-    /*
-    Ver com o zanon como crio isso:
-     lista( lista(0), lista(1))
-
-    */
     private ArrayList<ArrayList<Integer>> control;
 
-    public LRU(int qtdConjuntos, int linhas){
-        this.qtdConjuntos = qtdConjuntos;
-        this.linhas = linhas;
+    public LRU(){
         this.control = new ArrayList<>();
     }
 
@@ -34,6 +27,22 @@ public class LRU implements PoliticaSubstituicao{
     public void updateIndex(int indexConj, int index) {
         // TODO Auto-generated method stub
 
+    }
+
+    public int getConjuntoEscolhido() {
+        return conjuntoEscolhido;
+    }
+
+    public void setConjuntoEscolhido(int conjuntoEscolhido) {
+        this.conjuntoEscolhido = conjuntoEscolhido;
+    }
+
+    public int getLinhas() {
+        return linhas;
+    }
+
+    public void setLinhas(int linhas) {
+        this.linhas = linhas;
     }
 
 }

@@ -103,7 +103,7 @@ public class Memory{
         //ver como vai receber a politica LRU OR Random
         // nao lembro como faz essa merda de operar com interface
         // é alguma coisa parecido com a linha de baixo
-        pol = new Randomica(qtdConjuntos, offSet);
+        //pol = new Randomica(qtdConjuntos, offSet);
 
         //Como anteriormento ver como cria uma lista de lista em java
         //inicializer zerando tudo em conj
@@ -152,8 +152,7 @@ public class Memory{
                "\nBits por Conjunto:"+repBits(qtdConjuntos*1.00)+
                "\nBits tag:"+qtdTag+
                "\nTamanho da Cache:"+tamCache+
-               "\nPercentual de dados utilizados na cache:"+utilCache+
-               "\nQuantidade de Acessos:"+acessos+
+               "\nQuantidade de Enderecos buscados:"+acessos+
                "\nQuantidade de Hit's:"+hit+
                "\nPercentual de Hit's:"+ (hit/acessos * 100) +
                "\nQuantide de Miss:"+miss+

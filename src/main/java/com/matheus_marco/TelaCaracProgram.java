@@ -92,6 +92,7 @@ public class TelaCaracProgram {
                 try {
                     //Tenta converter o campo de texto com o numero max de enderecos p/ gerar.
                     int numMaxEnderecos = Integer.parseInt(tfMaxEnderecos.getText());
+                    if(numMaxEnderecos < 1){throw new NumberFormatException();}
                     CaracterizacaoPrograma carac = new CaracterizacaoPrograma(file, numMaxEnderecos);
                     carac.leArquivo();
                     TelaCaracCache telaCarac = new TelaCaracCache(mainStage, cenaCaracProgram);

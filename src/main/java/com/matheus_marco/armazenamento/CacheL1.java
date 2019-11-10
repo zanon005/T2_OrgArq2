@@ -78,4 +78,12 @@ public class CacheL1{
     public int getPenalidade(){
         return missPenalty;
     }
+
+    public int getHitCounter() {
+        return hitCounter;
+    }
+
+    public int getMissCounter() {
+        return missCounter;
+    }
 }
