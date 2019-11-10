@@ -48,7 +48,7 @@ public class HierarquiaMem {
         this.numBitsEnderecos = 32;
         calculaBits();
         l1 = new CacheL1(penaltyL1, politica, numWordsByBlock, numLinhasMemDado, 
-        numConjuntosMemAssociativa, tamConjuntosMemAssociativa);
+        numConjuntosMemAssociativa, tamConjuntosMemAssociativa, numBitsEnderecos);
         l2 = new CacheL2(probabilityHitL2, penaltyL2);
         l3 = new CacheL3(probabilityHitL3, penaltyL3);
         mainMemory = new MainMemory(probabilityHitMainMemory, penaltyMainMemory);

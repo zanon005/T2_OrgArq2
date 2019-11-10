@@ -55,17 +55,6 @@ public class TelaCaracProgram {
         helpPickFileMessage.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
         grid.add(helpPickFileMessage, 0, 2);
 
-        HBox hbArquivo = new HBox();
-        hbArquivo.setAlignment(Pos.CENTER);
-
-        Label arquivo = new Label("Arquivo:");
-        arquivo.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
-
-        openFileButton.setOnAction(e -> {
-            this.file = fileChooser.showOpenDialog(mainStage);
-        });
-        hbArquivo.getChildren().addAll(arquivo, openFileButton);
-        grid.add(hbArquivo, 0, 3);
 
         HBox hbMaxEnderecos = new HBox();
         hbMaxEnderecos.setAlignment(Pos.CENTER);
@@ -74,7 +63,18 @@ public class TelaCaracProgram {
         TextField tfMaxEnderecos = new TextField();
         tfMaxEnderecos.setPrefWidth(80);
         hbMaxEnderecos.getChildren().addAll(nMaxEnderecos, tfMaxEnderecos);
-        grid.add(hbMaxEnderecos, 0, 4); 
+        grid.add(hbMaxEnderecos, 0, 3); 
+
+        HBox hbArquivo = new HBox();
+        hbArquivo.setAlignment(Pos.CENTER);
+        Label arquivo = new Label("Arquivo:");
+        arquivo.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
+
+        openFileButton.setOnAction(e -> {
+            this.file = fileChooser.showOpenDialog(mainStage);
+        });
+        hbArquivo.getChildren().addAll(arquivo, openFileButton);
+        grid.add(hbArquivo, 0, 4);
 
         Button generateAdresses = new Button("Gerar enderecos!");
         generateAdresses.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
