@@ -8,7 +8,8 @@ public class LRU implements PoliticaSubstituicao{
     private int linhas;
     private ArrayList<ArrayList<Integer>> control;
 
-    public LRU(){
+    public LRU(int linhas){
+        this.linhas = linhas;
         this.control = new ArrayList<>();
     }
 
@@ -43,6 +44,10 @@ public class LRU implements PoliticaSubstituicao{
 
     public void setLinhas(int linhas) {
         this.linhas = linhas;
+    }
+
+    public String toString(){
+        return "LRU";
     }
 
 }

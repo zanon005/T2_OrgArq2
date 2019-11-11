@@ -136,13 +136,21 @@ public class TelaCaracCache {
                 sizePalavra = Integer.parseInt(fieldSizeWord.getText());
                 numVias = Integer.parseInt(fieldNumVias.getText());
                 numBitsEndereco = Integer.parseInt(fieldBitsEndereco.getText());
-                String politica = boxPolitica.getValue();
-                if(politica.equals("Politica de subs. Randomica")){
-                    politicaEscolhida = new Randomica();
-                }else{
-                    politicaEscolhida = new LRU();
-                }
 
+                /*System.out.println("ByteCache: "+sizeBytesCache);
+                System.out.println("PalavraBlock: "+numPalavrasByBlock);
+                System.out.println("TamPalavra: "+sizePalavra);
+                System.out.println("vias: "+numVias);
+                System.out.println("bitsEndereco: "+numBitsEndereco);
+                catch (NumberFormatException e1) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Número digitado nos campos inválido!");
+                alert.setHeaderText("Digite um número válido!");
+                alert.setContentText("Digite valores maiores que zero!, 'numero vias > 0'... etc ");
+                alert.showAndWait();
+                
+                */
+                
                 CaracterizacaoCache caracterizacaoCache = CaracterizacaoCache.getInstance();
                 caracterizacaoCache.setFile(file);
                 caracterizacaoCache.leArquivo();
@@ -150,15 +158,20 @@ public class TelaCaracCache {
                 HierarquiaMem hierarquiaMem = HierarquiaMem.getInstance();
                 hierarquiaMem.carregaHierarquiaMem(numBitsEndereco, sizeBytesCache, numPalavrasByBlock, sizePalavra, numVias);
 
+                String politica = boxPolitica.getValue();
+                if(politica.equals("Politica de subs. Randomica")){
+                    politicaEscolhida = new Randomica(hierarquiaMem.getTamConjuntosMemAssociativa());
+                    hierarquiaMem.setPolitica(politicaEscolhida);
+                }else{
+                    politicaEscolhida = new LRU(hierarquiaMem.getTamConjuntosMemAssociativa());
+                    hierarquiaMem.setPolitica(politicaEscolhida);
+                }
+                hierarquiaMem.carregaMemorias();
+                
+
                 TelaLog telaLog = new TelaLog(mainStage);
                 Scene scene = telaLog.getTelaCaracProgram();
                 mainStage.setScene(scene);
-            } catch (NumberFormatException e1) {
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle("Número digitado nos campos inválido!");
-                alert.setHeaderText("Digite um número válido!");
-                alert.setContentText("Digite valores maiores que zero!, 'numero vias > 0'... etc ");
-                alert.showAndWait();
             } catch (FileNotInCorrectFormatException e2) {
                 Alert alert = new Alert(AlertType.WARNING);
                 alert.setTitle("Arquivo invlálido!");

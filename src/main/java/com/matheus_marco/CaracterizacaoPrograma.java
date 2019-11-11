@@ -58,7 +58,7 @@ public class CaracterizacaoPrograma {
             int auxI = 0;
             while(auxI != qtdEnderecos){
                 fr.write(String.valueOf(auxI));
-                fr.write("\n");
+                if(auxI+1 != qtdEnderecos){ fr.write("\n");}
                 numTotalLinhas++;
                 //Verificacao se numero max de enderecos nao foi extrapolado!.
                 if(numTotalLinhas >= numMaxEnderecos){break;}
@@ -70,7 +70,7 @@ public class CaracterizacaoPrograma {
                         if(linha[0].equals("ji")){
                             auxI = Integer.parseInt(linha[2]);
                             fr.write(String.valueOf(auxI));
-                            fr.write("\n");
+                            if(auxI+1 != qtdEnderecos){ fr.write("\n");}
                             numTotalLinhas++;
                             //Verificacao se numero max de enderecos nao foi extrapolado!.
                             if(numTotalLinhas >= numMaxEnderecos){break;}
@@ -79,7 +79,7 @@ public class CaracterizacaoPrograma {
                             if(valor <= Integer.parseInt(linha[3])){
                                 auxI = Integer.parseInt(linha[2]);
                                 fr.write(String.valueOf(auxI));
-                                fr.write("\n");
+                                if(auxI+1 != qtdEnderecos){ fr.write("\n");}
                                 numTotalLinhas++;
                                 //Verificacao se numero max de enderecos nao foi extrapolado!.
                                 if(numTotalLinhas >= numMaxEnderecos){break;}

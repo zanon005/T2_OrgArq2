@@ -19,6 +19,7 @@ public class TelaLog {
     private int sizeBytesWord;
     private int numVias;
     private int numBitsEnderecos; //Sor definiu como 32 no pdf.
+    private Processador processador;
 
     public TelaLog(Stage anStage) {
         this.mainStage = anStage;
@@ -33,13 +34,19 @@ public class TelaLog {
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
-        Text sceneTitle = new Text("Definição da memória cache!");
+        Text sceneTitle = new Text("Log da execução do programa!");
         sceneTitle.setUnderline(true);
         sceneTitle.setId("welcome-text");
         sceneTitle.setFont(Font.font("Tahoma", FontWeight.BLACK, 20));
         grid.add(sceneTitle, 0, 0); // 0,0,2,1
 
-        Text log = new Text("BATAAAAAAAAAAAAAAAAAAAAATA");
+        Text log = new Text();
+
+        //Desculpa cops pai
+        processador = Processador.getInstance();
+        processador.leArquivo();
+        log.setText(processador.start());
+        
         grid.add(log, 0, 1);
 
         cenaTelaLog = new Scene(grid);
