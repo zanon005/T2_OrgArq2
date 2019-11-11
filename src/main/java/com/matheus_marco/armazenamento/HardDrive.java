@@ -17,11 +17,10 @@ public class HardDrive {
 
     // Metodo que retorna se o endereco esta presente na memoria.
     public boolean getEndereco(){
-        //r.nextInt((max - min) + 1) + min;
-        int random = new Random().nextInt((100-1) + 1) + 1;
-        boolean achou = random < probabilityHit;
+        //int random = new Random().nextInt((100-1) + 1) + 1;
+        boolean achou = true; /*SOH CONFIA random < probabilityHit;*/
         if(achou){
-            hitCounter++;
+            this.hitCounter++;
             return true;
         }else{
             //missCounter++;
@@ -35,6 +34,6 @@ public class HardDrive {
     }
 
     public int getHitCounter() {
-        return hitCounter;
+        return this.hitCounter;
     }
 }

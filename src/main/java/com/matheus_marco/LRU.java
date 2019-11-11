@@ -1,53 +1,56 @@
 package com.matheus_marco;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map.Entry;
 
 public class LRU implements PoliticaSubstituicao{
-
-    private int conjuntoEscolhido;
+    
     private int linhas;
-    private ArrayList<ArrayList<Integer>> control;
-
+    
+    private LinkedList<HashMap<Integer,Integer>> mapEnderecos;
+    private HierarquiaMem hm = HierarquiaMem.getInstance();
+    
     public LRU(int linhas){
         this.linhas = linhas;
-        this.control = new ArrayList<>();
+        this.mapEnderecos = new LinkedList<>();
+
+        for(int i=0; i< hm.getNumConjuntosMemAssociativa();i++){
+            HashMap<Integer,Integer> aux = new HashMap<>();
+            for(int j=0; j<hm.getTamConjuntosMemAssociativa(); j++ ){
+                aux.put(j, 0);
+            }
+            this.mapEnderecos.add(aux);
+        }
+    }
+    
+    public void atualizaFrequencia(int conjunto, int indexEndereco){
+        mapEnderecos.get(conjunto).put(indexEndereco, mapEnderecos.get(conjunto).get(indexEndereco)+1);
     }
 
     //@Override
-    public int getIndex(int indexConj) {
-        int menorTempo = 0;
-        for(int i=1; i < linhas; i++){
-            if (control.get(indexConj).get(i) < control.get(indexConj).get(menorTempo)){
-                menorTempo = i;
+    public int getIndex(int iConj) {
+        int minFreq = -1;
+        int linhaKey = -1;
+        for (Entry<Integer,Integer> entry : mapEnderecos.get(iConj).entrySet()) {
+            if(minFreq < entry.getValue().intValue()){
+                minFreq = entry.getValue().intValue();
+                linhaKey = entry.getKey().intValue();
             }
         }
-        return menorTempo;
+        return linhaKey;
     }
-
-    //@Override
-    public void updateIndex(int indexConj, int index) {
-        // TODO Auto-generated method stub
-
-    }
-
-    public int getConjuntoEscolhido() {
-        return conjuntoEscolhido;
-    }
-
-    public void setConjuntoEscolhido(int conjuntoEscolhido) {
-        this.conjuntoEscolhido = conjuntoEscolhido;
-    }
-
+    
     public int getLinhas() {
         return linhas;
     }
-
+    
     public void setLinhas(int linhas) {
         this.linhas = linhas;
     }
-
+    
     public String toString(){
         return "LRU";
     }
-
+    
 }

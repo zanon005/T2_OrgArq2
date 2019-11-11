@@ -92,14 +92,13 @@ public class HierarquiaMem {
             return atraso;
         }else{
             //Considerando hd com 100% probabilidade
+            hd.getEndereco();
             atraso+= hd.getPenalidade();
             return atraso;
         }
     }
 
-    public int getNumBitsEndereco(){
-        return this.numBitsEnderecos;
-    }
+    public int getNumBitsEndereco(){ return this.numBitsEnderecos;}
 
     public int getHitsL1(){return this.l1.getHitCounter();}
 
@@ -121,73 +120,43 @@ public class HierarquiaMem {
 
     public int getNumLinhasMemDados(){return this.numLinhasMemDado;}
 
-    public int getTamBytesCache() {
-        return tamBytesCache;
-    }
+    public int getTamBytesCache() {return tamBytesCache;}
 
     public void setTamBytesCache(int tamBytesCache) {
         this.tamBytesCache = tamBytesCache;
     }
 
-    public int getNumWordsByBlock() {
-        return numWordsByBlock;
-    }
+    public int getNumWordsByBlock() {return numWordsByBlock;}
 
-    public void setNumWordsByBlock(int numWordsByBlock) {
-        this.numWordsByBlock = numWordsByBlock;
-    }
+    public void setNumWordsByBlock(int numWordsByBlock) {this.numWordsByBlock = numWordsByBlock;}
 
-    public int getSizeBytesWord() {
-        return sizeBitsWord;
-    }
+    public int getSizeBytesWord() {return sizeBitsWord;}
 
-    public void setSizeBytesWord(int sizeBitsWord) {
-        this.sizeBitsWord = sizeBitsWord;
-    }
+    public void setSizeBytesWord(int sizeBitsWord) {this.sizeBitsWord = sizeBitsWord;}
 
-    public int getNumVias() {
-        return numVias;
-    }
+    public int getNumVias() {return numVias;}
 
-    public void setNumVias(int numVias) {
-        this.numVias = numVias;
-    }
+    public void setNumVias(int numVias) {this.numVias = numVias;}
 
-    public int getNumBitsEnderecos() {
-        return numBitsEnderecos;
-    }
+    public int getNumBitsEnderecos() {return numBitsEnderecos;}
 
-    public void setNumBitsEnderecos(int numBitsEnderecos) {
-        this.numBitsEnderecos = numBitsEnderecos;
-    }
+    public void setNumBitsEnderecos(int numBitsEnderecos) {this.numBitsEnderecos = numBitsEnderecos;}
 
-    public int getTamBlocoMemDado() {
-        return tamBlocoMemDado;
-    }
+    public int getTamBlocoMemDado() {return tamBlocoMemDado;}
 
-    public void setTamBlocoMemDado(int tamBlocoMemDado) {
-        this.tamBlocoMemDado = tamBlocoMemDado;
-    }
+    public void setTamBlocoMemDado(int tamBlocoMemDado) {this.tamBlocoMemDado = tamBlocoMemDado;}
 
-    public int getNumLinhasMemDado() {
-        return numLinhasMemDado;
-    }
+    public int getNumLinhasMemDado() {return numLinhasMemDado;}
 
-    public void setNumLinhasMemDado(int numLinhasMemDado) {
-        this.numLinhasMemDado = numLinhasMemDado;
-    }
+    public void setNumLinhasMemDado(int numLinhasMemDado) {this.numLinhasMemDado = numLinhasMemDado;}
 
-    public int getNumConjuntosMemAssociativa() {
-        return numConjuntosMemAssociativa;
-    }
+    public int getNumConjuntosMemAssociativa() {return numConjuntosMemAssociativa;}
 
     public void setNumConjuntosMemAssociativa(int numConjuntosMemAssociativa) {
         this.numConjuntosMemAssociativa = numConjuntosMemAssociativa;
     }
 
-    public int getTamConjuntosMemAssociativa() {
-        return tamConjuntosMemAssociativa;
-    }
+    public int getTamConjuntosMemAssociativa() {return tamConjuntosMemAssociativa;}
 
     public void setTamConjuntosMemAssociativa(int tamConjuntosMemAssociativa) {
         this.tamConjuntosMemAssociativa = tamConjuntosMemAssociativa;
@@ -195,11 +164,7 @@ public class HierarquiaMem {
 
     public String getNomePolitica(){return this.politica.toString();}
 
-    public PoliticaSubstituicao getPolitica() {
-        return politica;
-    }
+    public PoliticaSubstituicao getPolitica() {return politica;}
 
-    public void setPolitica(PoliticaSubstituicao politica) {
-        this.politica = politica;
-    }
+    public void setPolitica(PoliticaSubstituicao politica) {this.politica = politica;}
 }

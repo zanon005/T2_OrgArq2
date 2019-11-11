@@ -12,9 +12,9 @@ public class Processador {
     private HierarquiaMem hm = HierarquiaMem.getInstance();
     private CaracterizacaoCache cc = CaracterizacaoCache.getInstance();
 
-    private int atrasosTotais;
-    private int hitsTotais;
-    private int missTotais;
+    private double atrasosTotais;
+    private double hitsTotais;
+    private double missTotais;
 
     private Processador(){}
 
@@ -33,12 +33,10 @@ public class Processador {
             FileReader arq = new FileReader("enderecos.txt");
             BufferedReader lerArq = new BufferedReader(arq);
             String linha = lerArq.readLine();
-            System.out.println("P -> "+linha);
             conteudoArq.add(linha); 
             while (linha != null) {
               linha = lerArq.readLine();
               if(linha == null){System.out.println("PARADOXO");break;}
-              System.out.println("P -> "+linha);
               conteudoArq.add(linha);
             }
             arq.close();
@@ -54,26 +52,29 @@ public class Processador {
         //Para cada endereco no arquivo de enderecos gerados...
         for (String endereco : conteudoArq) {
             //(EnderecoBinario, EndercoNormal)
-            System.out.println("Endereco processador ->"+endereco);
+            //System.out.println("Endereco processador ->"+endereco);
             String enderecoBinario = formatStr(strDecimalToBin(endereco));
-            System.out.println("EnderecoBIN processador ->"+enderecoBinario);
+            //System.out.println("EnderecoBIN processador ->"+enderecoBinario);
             int auxAtraso = hm.getEndereco(enderecoBinario, endereco);
             if(0 == auxAtraso){
-                resultLog.append(endereco+"Hit CacheL1, Atraso = 0"+"\n");
+                resultLog.append("Endereco: "+endereco+" -> Hit CacheL1, Atraso = 0"+"\n");
             }else if(cc.getPenaltyL2() == auxAtraso){
-                resultLog.append(endereco+"Hit CacheL2, Atraso = "+auxAtraso+"\n");
+                resultLog.append("Endereco: "+endereco+" -> Hit CacheL2, Atraso = "+auxAtraso+"\n");
             }else if(cc.getPenaltyL3() == auxAtraso){
-                resultLog.append(endereco+"Hit CacheL3, Atraso = "+auxAtraso+"\n");
+                resultLog.append("Endereco: "+endereco+" -> Hit CacheL3, Atraso = "+auxAtraso+"\n");
             }else if(cc.getPenaltyMainMemory() == auxAtraso){
-                resultLog.append(endereco+"Hit MR, Atraso = "+auxAtraso+"\n");
+                resultLog.append("Endereco: "+endereco+" -> Hit MR, Atraso = "+auxAtraso+"\n");
             }else{
-                resultLog.append(endereco+"Hit HD, Atraso = "+auxAtraso+"\n");
+                resultLog.append("Endereco: "+endereco+" -> Hit HD, Atraso = "+auxAtraso+"\n");
             }
             atrasosTotais+= auxAtraso;
         }
 
         long fim= System.currentTimeMillis();
         long time = fim - inicio;
+
+        this.hitsTotais = hm.getHitsL1()+hm.getHitsL2()+hm.getHitsL3()+hm.getHitsMR()+hm.getHitsHD();
+        this.missTotais = hm.getMissL1()+hm.getMissL2()+hm.getMissL3()+hm.getMissMR();
         resultLog.append("**************************************\n");
         resultLog.append("Tamanho total da memoria: "+hm.getNumLinhasMemDados());
         resultLog.append("\nTamanho em Bytes da palavra: "+hm.getSizeBytesWord());
@@ -81,16 +82,16 @@ public class Processador {
         resultLog.append("\nTamanho em Bytes do bloco: "+hm.getTamBlocoMemDado());
         resultLog.append("\nQuantidade de conjuntos: "+hm.getNumVias());
         resultLog.append("\nPolitica de substituicao: "+hm.getNomePolitica());
-        resultLog.append("\n:Tamanho dos conjuntos: "+hm.getTamConjuntosMemAssociativa());
-        resultLog.append("\n:Quantidade de conjuntos: "+hm.getNumConjuntosMemAssociativa());
-        resultLog.append("\n:Quantidade de enderecos buscados: "+conteudoArq.size());
-        resultLog.append("\n:Quantidade de Hits totais: "+this.hitsTotais);
-        resultLog.append("\n:Percentual de Hits: "+ ((this.hitsTotais/conteudoArq.size())*100)+"%");
-        resultLog.append("\n:Quantidade de Miss totais: "+this.missTotais);
-        resultLog.append("\n:Percentual de Miss: "+((this.missTotais/conteudoArq.size())*100)+"%");
-        resultLog.append("\n:Atraso total gerado na execucao: "+this.atrasosTotais);
-        resultLog.append("\n:Tempo medio de acesso: "+time/conteudoArq.size());
-        resultLog.append("\n:Tempo total da execucao em segundos: "+time/1000);
+        resultLog.append("\nTamanho dos conjuntos: "+hm.getTamConjuntosMemAssociativa());
+        resultLog.append("\nQuantidade de conjuntos: "+hm.getNumConjuntosMemAssociativa());
+        resultLog.append("\nQuantidade de enderecos buscados: "+conteudoArq.size());
+        resultLog.append("\nQuantidade de Hits totais: "+this.hitsTotais);
+        resultLog.append("\nPercentual de Hits: "+ ((this.hitsTotais/conteudoArq.size())*100)+"%");
+        resultLog.append("\nQuantidade de Miss totais: "+this.missTotais);
+        resultLog.append("\nPercentual de Miss: "+((this.missTotais/conteudoArq.size())*100)+"%");
+        resultLog.append("\nAtraso total gerado na execucao: "+this.atrasosTotais);
+        resultLog.append("\nTempo medio de acesso: "+time / (conteudoArq.size()+0.0) );
+        resultLog.append("\nTempo total da execucao em segundos: "+time/1000.0);
 
         return resultLog.toString();
     }

@@ -1,6 +1,7 @@
 package com.matheus_marco.armazenamento;
 
 import com.matheus_marco.PoliticaSubstituicao;
+import com.matheus_marco.Processador;
 
 public class CacheL1{
 
@@ -98,6 +99,7 @@ public class CacheL1{
             //Achou tag na mem associativa, acessar memDados com o indice fornecido
             if(memoriaDados[iHitTag][qualPalavra].equals(enderecoDecimal)){
                 hitCounter++;
+                politicaSubstituicao.atualizaFrequencia(qualConjunto, iHitTag);
                 return true;
             }
         }
@@ -110,6 +112,13 @@ public class CacheL1{
     //  Se der miss na cacheL1, quando der hit nos outros niveis da hierarquia, entao "write throught" 
     //de volta na cache l1 o dado que foi requisitado.
     public void escreveEndereco(String endereco, String enderecoDecimal){
+        //Endereco 50 -> 32 + 16 + 2
+        // 00,01,10,11 0->3
+        //Num combinacoes  = 2^(numBitsPalavra)
+        // 000, 001, 010, 011, 100, 101, 110, 111 0->7
+        //000000000000000000000000001100  10
+        //000000000000000000000000001100  00 
+        String bitsPalavra = endereco.substring(bitsForEndereco-bitsForPalavra, bitsForEndereco);
         String bitsConjunto = endereco.substring(bitsForEndereco-bitsForPalavra-bitsForConjunto, bitsForEndereco-bitsForPalavra);
         String bitsTag = endereco.substring(0, bitsForEndereco-bitsForPalavra-bitsForConjunto);
 
@@ -138,16 +147,18 @@ public class CacheL1{
             indexLinhaEscolhida = indexLinhaASubstituir;
         }
 
+        //Primeira palavra que vai na primeira coluna
+        // enderecoQueVeio - bitsPalavra(ultimos)
+        //Concatenar nesse endereco numBitsForPalavra 0's, se 8 palavras endereco+"000"
+        String palavra = endereco.substring(0, bitsForEndereco-bitsForPalavra);
+        //Concatear 'bitsForPalavra' * '0',  se 8 palavras endereco+"000"
+        for(int i=0; i<bitsForPalavra;i++){palavra+="0";}
+        
+        //Transformar a nova palavra no formato StringDecimal
+        palavra = String.valueOf(Integer.parseInt(palavra, 2));
+
         //Escreve o dado na memoria de dados na coluna
-        String palavra = enderecoDecimal;
         for(int i=0; i<qtdPalavrasNoBloco; i++){
-            //memoriaDados[qualConjunto+1 * tamConjuntosMemAssociativa][i] = 
-            //A tag para essa palavra vai estar na linha 105 por exemplo
-            //A palavra eh 457, por exemplo
-            //Temos 4 palavras por linha na memoria de dados
-            //Em qual coluna que vai o desgraçado? e seus amiguinhos ? 
-            //[ (454),455,(456),(457)  ]
-            //VAI NA PRIMEIRA ENTAO FODASE
             memoriaDados[indexLinhaEscolhida][i] = palavra;
             palavra = String.valueOf(Integer.parseInt(palavra) + 1);
         }

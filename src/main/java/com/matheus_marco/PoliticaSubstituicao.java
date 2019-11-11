@@ -4,8 +4,8 @@ public interface PoliticaSubstituicao{
 
     public int getIndex(int indexConj);
 
-    public void updateIndex(int indexConj, int index);
-
     public String toString();
+
+    public void atualizaFrequencia(int conjunto, int indexEndereco);
     
 }

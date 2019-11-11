@@ -14,13 +14,11 @@ public class Randomica implements PoliticaSubstituicao{
     public int getIndex(int indexConj) {
         //Gerar num random  0..511
         int rand = new Random().nextInt(linhas-1) * (indexConj+1);
-        System.out.println("Rand ->"+rand);
         return rand;
     }
 
-    //@Override
-    public void updateIndex(int indexConj, int index) {
-
+    public void atualizaFrequencia(int conjunto, int indexEndereco){
+        //mapEnderecos.get(conjunto).put(indexEndereco, mapEnderecos.get(conjunto).get(indexEndereco)+1);
     }
 
     public int getLinhas() {

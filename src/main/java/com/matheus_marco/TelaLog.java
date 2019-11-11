@@ -3,6 +3,7 @@ package com.matheus_marco;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -14,11 +15,6 @@ public class TelaLog {
     private Stage mainStage;
     private Scene cenaTelaLog;
 
-    private int tamBytesCache;
-    private int numWordsByBlock;
-    private int sizeBytesWord;
-    private int numVias;
-    private int numBitsEnderecos; //Sor definiu como 32 no pdf.
     private Processador processador;
 
     public TelaLog(Stage anStage) {
@@ -40,14 +36,19 @@ public class TelaLog {
         sceneTitle.setFont(Font.font("Tahoma", FontWeight.BLACK, 20));
         grid.add(sceneTitle, 0, 0); // 0,0,2,1
 
-        Text log = new Text();
+        //Text log = new Text();
+        TextArea log2 = new TextArea();
+        log2.setEditable(false);
+        log2.autosize();
+        log2.setMinHeight(500.0);
+        
 
         //Desculpa cops pai
         processador = Processador.getInstance();
         processador.leArquivo();
-        log.setText(processador.start());
+        log2.setText(processador.start());
         
-        grid.add(log, 0, 1);
+        grid.add(log2, 0, 1);
 
         cenaTelaLog = new Scene(grid);
         return this.cenaTelaLog;
