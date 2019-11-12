@@ -43,7 +43,7 @@ public class TelaLog {
         log2.setMinHeight(500.0);
         
 
-        //Desculpa cops pai
+        //Desculpa cops pai, sei q codigo nas telas eh feio
         processador = Processador.getInstance();
         processador.leArquivo();
         log2.setText(processador.start());

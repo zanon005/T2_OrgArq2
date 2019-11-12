@@ -12,7 +12,7 @@ public class HierarquiaMem {
     o número de palavras por bloco, o tamanho da palavra e o número de vias.*/
     private PoliticaSubstituicao politica;
 
-    private int tamBytesCache;
+    private int tamBitsCache;
     private int numWordsByBlock;
     private int sizeBitsWord;
     private int numVias;
@@ -42,9 +42,9 @@ public class HierarquiaMem {
         }
     }
 
-    public void carregaHierarquiaMem(int numBitsEnderecos, int tamBytesCache, int numWordsByBlock, int sizeBitsWord, int numVias){
+    public void carregaHierarquiaMem(int numBitsEnderecos, int tamBitsCache, int numWordsByBlock, int sizeBitsWord, int numVias){
         this.numBitsEnderecos = numBitsEnderecos;
-        this.tamBytesCache = tamBytesCache;
+        this.tamBitsCache = tamBitsCache;
         this.numWordsByBlock = numWordsByBlock;
         this.sizeBitsWord = sizeBitsWord;
         this.numVias = numVias;
@@ -69,10 +69,18 @@ public class HierarquiaMem {
     * cada linha da memoria associativa referencia da memoria de dados).  
     */
     private void calculaBits(){
+        //System.out.println("SizebitsPalavra: "+sizeBitsWord);
+        //System.out.println("NumWords: "+numWordsByBlock);
         tamBlocoMemDado = sizeBitsWord * numWordsByBlock;
-        numLinhasMemDado = tamBytesCache / tamBlocoMemDado;
+        //System.out.println("TamanhoBlocoBits: "+tamBlocoMemDado);
+        //System.out.println("TamanhoBitsCache: "+tamBitsCache);
+        numLinhasMemDado = tamBitsCache / tamBlocoMemDado;
+        //System.out.println("NumLinhasMem: "+numLinhasMemDado);
+        //System.out.println("NumVIAS: "+numVias);
         numConjuntosMemAssociativa = numLinhasMemDado / numVias;
-        tamConjuntosMemAssociativa = numLinhasMemDado / numConjuntosMemAssociativa;
+        //System.out.println("NumConjuntosAssoci.: "+numConjuntosMemAssociativa);
+        tamConjuntosMemAssociativa = tamBitsCache / numConjuntosMemAssociativa;
+        //System.out.println("TamanhoConjuntos: "+tamConjuntosMemAssociativa);
     }
 
     //Retorna o quanto demorou para devolver o endereco
@@ -120,11 +128,9 @@ public class HierarquiaMem {
 
     public int getNumLinhasMemDados(){return this.numLinhasMemDado;}
 
-    public int getTamBytesCache() {return tamBytesCache;}
+    public int getTamBitsCache() {return tamBitsCache;}
 
-    public void setTamBytesCache(int tamBytesCache) {
-        this.tamBytesCache = tamBytesCache;
-    }
+    public void setTamBytesCache(int tamBitsCache) {this.tamBitsCache = tamBitsCache;}
 
     public int getNumWordsByBlock() {return numWordsByBlock;}
 

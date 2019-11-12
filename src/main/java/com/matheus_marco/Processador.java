@@ -52,9 +52,7 @@ public class Processador {
         //Para cada endereco no arquivo de enderecos gerados...
         for (String endereco : conteudoArq) {
             //(EnderecoBinario, EndercoNormal)
-            //System.out.println("Endereco processador ->"+endereco);
             String enderecoBinario = formatStr(strDecimalToBin(endereco));
-            //System.out.println("EnderecoBIN processador ->"+enderecoBinario);
             int auxAtraso = hm.getEndereco(enderecoBinario, endereco);
             if(0 == auxAtraso){
                 resultLog.append("Endereco: "+endereco+" -> Hit CacheL1, Atraso = 0"+"\n");
@@ -75,22 +73,23 @@ public class Processador {
 
         this.hitsTotais = hm.getHitsL1()+hm.getHitsL2()+hm.getHitsL3()+hm.getHitsMR()+hm.getHitsHD();
         this.missTotais = hm.getMissL1()+hm.getMissL2()+hm.getMissL3()+hm.getMissMR();
-        resultLog.append("**************************************\n");
-        resultLog.append("Tamanho total da memoria: "+hm.getNumLinhasMemDados());
-        resultLog.append("\nTamanho em Bytes da palavra: "+hm.getSizeBytesWord());
-        resultLog.append("\nNúmero palavras p/ bloco: "+hm.getNumWordsByBlock());
-        resultLog.append("\nTamanho em Bytes do bloco: "+hm.getTamBlocoMemDado());
-        resultLog.append("\nQuantidade de conjuntos: "+hm.getNumVias());
+        resultLog.append("************************************************************************");
+        resultLog.append("\nTamanho total da memoria cache em bits: "+hm.getTamBitsCache());
+        resultLog.append("\nTamanho total da memoria cache em linhas: "+hm.getNumLinhasMemDados());
+        resultLog.append("\nTamanho em bits da palavra: "+hm.getSizeBytesWord());
+        resultLog.append("\nNúmero palavras por bloco: "+hm.getNumWordsByBlock());
+        resultLog.append("\nTamanho em bits do bloco: "+hm.getTamBlocoMemDado());
+        resultLog.append("\nQuantidade de vias: "+hm.getNumVias());
         resultLog.append("\nPolitica de substituicao: "+hm.getNomePolitica());
-        resultLog.append("\nTamanho dos conjuntos: "+hm.getTamConjuntosMemAssociativa());
-        resultLog.append("\nQuantidade de conjuntos: "+hm.getNumConjuntosMemAssociativa());
+        resultLog.append("\nTamanho dos conjuntos associativos em bits: "+hm.getTamConjuntosMemAssociativa());
+        resultLog.append("\nQuantidade de conjuntos associativos: "+hm.getNumConjuntosMemAssociativa());
         resultLog.append("\nQuantidade de enderecos buscados: "+conteudoArq.size());
         resultLog.append("\nQuantidade de Hits totais: "+this.hitsTotais);
         resultLog.append("\nPercentual de Hits: "+ ((this.hitsTotais/conteudoArq.size())*100)+"%");
         resultLog.append("\nQuantidade de Miss totais: "+this.missTotais);
         resultLog.append("\nPercentual de Miss: "+((this.missTotais/conteudoArq.size())*100)+"%");
         resultLog.append("\nAtraso total gerado na execucao: "+this.atrasosTotais);
-        resultLog.append("\nTempo medio de acesso: "+time / (conteudoArq.size()+0.0) );
+        resultLog.append("\nTempo medio de acesso: "+(time/1000.0) / (conteudoArq.size()+0.0) );
         resultLog.append("\nTempo total da execucao em segundos: "+time/1000.0);
 
         return resultLog.toString();

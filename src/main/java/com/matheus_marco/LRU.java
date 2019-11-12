@@ -17,7 +17,9 @@ public class LRU implements PoliticaSubstituicao{
 
         for(int i=0; i< hm.getNumConjuntosMemAssociativa();i++){
             HashMap<Integer,Integer> aux = new HashMap<>();
+            System.out.println("TAM CONJUNTOS ->"+hm.getTamConjuntosMemAssociativa());
             for(int j=0; j<hm.getTamConjuntosMemAssociativa(); j++ ){
+                //System.out.println("J ESCOLHIDO ->"+j);
                 aux.put(j, 0);
             }
             this.mapEnderecos.add(aux);

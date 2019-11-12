@@ -1,7 +1,6 @@
 package com.matheus_marco.armazenamento;
 
 import com.matheus_marco.PoliticaSubstituicao;
-import com.matheus_marco.Processador;
 
 public class CacheL1{
 
@@ -33,8 +32,9 @@ public class CacheL1{
         this.numConjuntosMemAssociativa = numConjuntosMemAssociativa;
         this.tamConjuntosMemAssociativa = tamConjuntosMemAssociativa;
         this.bitsForEndereco = bitsEndereco;
-        //System.out.println("numConj ->"+numConjuntosMemAssociativa);
-        //System.out.println("tamConj ->"+tamConjuntosMemAssociativa);
+        System.out.println("numConj ->"+numConjuntosMemAssociativa);
+        System.out.println("tamConj ->"+tamConjuntosMemAssociativa);
+        System.out.println("numLinhasMem ->"+numLinhasMemDado);
         this.conjuntoAssociativo = new String[numConjuntosMemAssociativa][tamConjuntosMemAssociativa][2];
         this.memoriaDados = new String[numLinhasMemDado][qtdPalavrasNoBloco];
         this.listIndexProxPosDisponivelConjuntos = new int[numConjuntosMemAssociativa];
@@ -75,13 +75,17 @@ public class CacheL1{
         //System.out.println("bitsConjunto -> "+bitsConjunto);
         //System.out.println("bitsTag -> "+bitsTag);
 
-        int qualPalavra = Integer.parseInt(bitsPalavra,2);
+        //Para tratar caso soh se tenha 1 palavra por linha, entao eh sempre a palavra 'zero'.
+        int qualPalavra = 0;
+        if(bitsPalavra.length() != 0){
+            qualPalavra = Integer.parseInt(bitsPalavra,2);
+        }
+        //Para tratar caso soh se tenha 1 conjunto associativo, entao eh sempre o conjunto 'zero'.
         int qualConjunto=0;
         if(bitsConjunto.length() != 0){
             qualConjunto = Integer.parseInt(bitsConjunto, 2);
         }
         
-
         //Achar tag na mem associativa e gritar a linha correspondente na mem dados
         int iHitTag=-1;
         //System.out.println("Qual conjunto -> "+qualConjunto);
@@ -131,7 +135,9 @@ public class CacheL1{
         //Verificar se mem associativa ta cheia, se tiver, usa politica, se nao tiver escreve prox pos disponivel
         //Se nao ta cheio... entao escreve na prox pos disponivel
         int indexLinhaEscolhida = 0;
-        if(listIndexProxPosDisponivelConjuntos[qualConjunto] < tamConjuntosMemAssociativa){
+        //System.out.println("Num linhas -> "+numLinhasMemDado);
+        //System.out.println("Prox index -> "+listIndexProxPosDisponivelConjuntos[qualConjunto]);
+        if(listIndexProxPosDisponivelConjuntos[qualConjunto] < numLinhasMemDado){
             conjuntoAssociativo[qualConjunto][listIndexProxPosDisponivelConjuntos[qualConjunto]][0] = bitsTag;
             conjuntoAssociativo[qualConjunto][listIndexProxPosDisponivelConjuntos[qualConjunto]][1] = "1"; //bit validade
             indexLinhaEscolhida = listIndexProxPosDisponivelConjuntos[qualConjunto];
@@ -140,6 +146,7 @@ public class CacheL1{
             //Ta cheio... usar politica de substituicao
             //System.out.println("ENTROU NO ELSE FUDIDO");
             //System.out.println("PEGANDO INDEX NA POLITICA -> "+politicaSubstituicao.toString());
+
             int indexLinhaASubstituir = politicaSubstituicao.getIndex(qualConjunto);
             //System.out.println("INDEX -> "+indexLinhaASubstituir);
             conjuntoAssociativo[qualConjunto][indexLinhaASubstituir][0] = bitsTag;
@@ -157,6 +164,7 @@ public class CacheL1{
         //Transformar a nova palavra no formato StringDecimal
         palavra = String.valueOf(Integer.parseInt(palavra, 2));
 
+        //System.out.println("linha escolhida -> "+indexLinhaEscolhida);
         //Escreve o dado na memoria de dados na coluna
         for(int i=0; i<qtdPalavrasNoBloco; i++){
             memoriaDados[indexLinhaEscolhida][i] = palavra;
