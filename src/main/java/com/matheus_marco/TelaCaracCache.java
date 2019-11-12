@@ -156,10 +156,10 @@ public class TelaCaracCache {
 
                 String politica = boxPolitica.getValue();
                 if(politica.equals("Politica de subs. Randomica")){
-                    politicaEscolhida = new Randomica(hierarquiaMem.getTamConjuntosMemAssociativa());
+                    politicaEscolhida = new Randomica(hierarquiaMem.getNumLinhasConjMemAssociativa());
                     hierarquiaMem.setPolitica(politicaEscolhida);
                 }else{
-                    politicaEscolhida = new LRU(hierarquiaMem.getTamConjuntosMemAssociativa());
+                    politicaEscolhida = new LFU(hierarquiaMem.getNumLinhasConjMemAssociativa());
                     hierarquiaMem.setPolitica(politicaEscolhida);
                 }
                 hierarquiaMem.carregaMemorias();

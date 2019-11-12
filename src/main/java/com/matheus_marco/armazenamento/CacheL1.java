@@ -13,6 +13,7 @@ public class CacheL1{
     private int numLinhasMemDado;
     private int numConjuntosMemAssociativa;
     private int tamConjuntosMemAssociativa;
+    private int numLinhasConjMemAssociativa;
     
     private int bitsForEndereco;
     private int bitsForPalavra;
@@ -24,7 +25,8 @@ public class CacheL1{
     private int[] listIndexProxPosDisponivelConjuntos;
 
     public CacheL1(int missPenalty, PoliticaSubstituicao politicaSubstituicao,int qtdPalavrasNoBloco, 
-    int numLinhasMemDado, int numConjuntosMemAssociativa, int tamConjuntosMemAssociativa, int bitsEndereco ){
+    int numLinhasMemDado, int numConjuntosMemAssociativa, int tamConjuntosMemAssociativa, int bitsEndereco,
+    int numLinhasConjMemAssociativa ){
         this.missPenalty = missPenalty;
         this.politicaSubstituicao = politicaSubstituicao;
         this.qtdPalavrasNoBloco = qtdPalavrasNoBloco;
@@ -32,15 +34,17 @@ public class CacheL1{
         this.numConjuntosMemAssociativa = numConjuntosMemAssociativa;
         this.tamConjuntosMemAssociativa = tamConjuntosMemAssociativa;
         this.bitsForEndereco = bitsEndereco;
-        System.out.println("numConj ->"+numConjuntosMemAssociativa);
-        System.out.println("tamConj ->"+tamConjuntosMemAssociativa);
+        this.numLinhasConjMemAssociativa = numLinhasConjMemAssociativa;
+        System.out.println("numConjs ->"+numConjuntosMemAssociativa);
+        System.out.println("tamConjs ->"+tamConjuntosMemAssociativa);
         System.out.println("numLinhasMem ->"+numLinhasMemDado);
-        this.conjuntoAssociativo = new String[numConjuntosMemAssociativa][tamConjuntosMemAssociativa][2];
+        System.out.println("numLinhasConj ->"+numLinhasConjMemAssociativa);
+        this.conjuntoAssociativo = new String[numConjuntosMemAssociativa][numLinhasConjMemAssociativa][2];
         this.memoriaDados = new String[numLinhasMemDado][qtdPalavrasNoBloco];
         this.listIndexProxPosDisponivelConjuntos = new int[numConjuntosMemAssociativa];
         //Inicializendo as listas
         for(int i=0; i<numConjuntosMemAssociativa; i++){
-            for(int j=0; j<tamConjuntosMemAssociativa; j++){
+            for(int j=0; j<numLinhasConjMemAssociativa; j++){
                 conjuntoAssociativo[i][j][0] = "";
                 conjuntoAssociativo[i][j][1] = "";
             }
@@ -53,7 +57,7 @@ public class CacheL1{
         for(int i=0; i<numConjuntosMemAssociativa; i++){
             listIndexProxPosDisponivelConjuntos[i] = 0;
         }
-
+        System.out.println("TamListIndex ->"+listIndexProxPosDisponivelConjuntos.length);
         this.bitsForPalavra = numBitsToRepresent(qtdPalavrasNoBloco);
         this.bitsForConjunto = numBitsToRepresent(numConjuntosMemAssociativa);
         this.bitsForTag = bitsEndereco - bitsForPalavra - bitsForConjunto;
@@ -89,26 +93,33 @@ public class CacheL1{
         //Achar tag na mem associativa e gritar a linha correspondente na mem dados
         int iHitTag=-1;
         //System.out.println("Qual conjunto -> "+qualConjunto);
-        for(int i=(qualConjunto * tamConjuntosMemAssociativa); i< tamConjuntosMemAssociativa; i++){
+        for(int i=0; i < numLinhasConjMemAssociativa; i++){
             //System.out.println("Linha q quer acessar conj-> "+i);
             //System.out.println("Tam conjAssociative "+conjuntoAssociativo.length);
             //[QualConjunto][QualLinhaDoConjunto][tag], [0] = tag, [1] = validade
+            //System.out.println("Tag -> "+bitsTag);
+            //System.out.println("OqTemConjAssociative -> "+conjuntoAssociativo[qualConjunto][i][0]);
             if(conjuntoAssociativo[qualConjunto][i][0].equals(bitsTag)){
                 iHitTag = i;
                 break;
             }
         }
         //Se iHitTag == -1 entao nao achou a tag!.
-        if(!(iHitTag == -1)){
+        if(iHitTag != -1){
+            System.out.println("DEU HIT, OLHANDO SE DADO REALMENTE ESTAH LA");
             //Achou tag na mem associativa, acessar memDados com o indice fornecido
             if(memoriaDados[iHitTag][qualPalavra].equals(enderecoDecimal)){
                 hitCounter++;
+                System.out.println("O DADO REALMENTE ESTAVA LA");
+                System.out.println("LINHA Q DEU HIT-> "+iHitTag+", No conj->"+qualConjunto);
                 politicaSubstituicao.atualizaFrequencia(qualConjunto, iHitTag);
                 return true;
             }
+            System.out.println("O DADO NAO ESTAVA LA :((((((((((((((");
         }
         missCounter++;
         //Como deu miss entao tem que escrever o dado na memoria, magico overpower
+        System.out.println("DEU MIS, ESCREVENDO DADO NA CACHE");
         escreveEndereco(endereco, enderecoDecimal);
         return false;
     }
@@ -126,7 +137,7 @@ public class CacheL1{
         String bitsConjunto = endereco.substring(bitsForEndereco-bitsForPalavra-bitsForConjunto, bitsForEndereco-bitsForPalavra);
         String bitsTag = endereco.substring(0, bitsForEndereco-bitsForPalavra-bitsForConjunto);
 
-        //Verificar se a tag existe no conjunto associativo
+        //Para tratar caso soh se tenha 1 conjunto associativo, entao eh sempre o conjunto 'zero'.
         int qualConjunto=0;
         if(bitsConjunto.length() != 0){
             qualConjunto = Integer.parseInt(bitsConjunto, 2);
@@ -136,19 +147,22 @@ public class CacheL1{
         //Se nao ta cheio... entao escreve na prox pos disponivel
         int indexLinhaEscolhida = 0;
         //System.out.println("Num linhas -> "+numLinhasMemDado);
-        //System.out.println("Prox index -> "+listIndexProxPosDisponivelConjuntos[qualConjunto]);
-        if(listIndexProxPosDisponivelConjuntos[qualConjunto] < numLinhasMemDado){
+        System.out.println("Prox index -> "+listIndexProxPosDisponivelConjuntos[qualConjunto]);
+        if(listIndexProxPosDisponivelConjuntos[qualConjunto] < numLinhasConjMemAssociativa){
+            System.out.println("Mem associativa ainda tem espaco livre");
+            System.out.println("ANTES OqTemConjAssociative -> "+conjuntoAssociativo[qualConjunto][listIndexProxPosDisponivelConjuntos[qualConjunto]][0]);
             conjuntoAssociativo[qualConjunto][listIndexProxPosDisponivelConjuntos[qualConjunto]][0] = bitsTag;
+            System.out.println("DEPOIS OqTemConjAssociative -> "+conjuntoAssociativo[qualConjunto][listIndexProxPosDisponivelConjuntos[qualConjunto]][0]);
             conjuntoAssociativo[qualConjunto][listIndexProxPosDisponivelConjuntos[qualConjunto]][1] = "1"; //bit validade
             indexLinhaEscolhida = listIndexProxPosDisponivelConjuntos[qualConjunto];
             listIndexProxPosDisponivelConjuntos[qualConjunto]++;
         }else{
             //Ta cheio... usar politica de substituicao
-            //System.out.println("ENTROU NO ELSE FUDIDO");
-            //System.out.println("PEGANDO INDEX NA POLITICA -> "+politicaSubstituicao.toString());
+            System.out.println("MEMORIA CHEIA, USANDO POLITICA...");
+            System.out.println("PEGANDO INDEX NA POLITICA -> "+politicaSubstituicao.toString());
 
             int indexLinhaASubstituir = politicaSubstituicao.getIndex(qualConjunto);
-            //System.out.println("INDEX -> "+indexLinhaASubstituir);
+            System.out.println("INDEX -> "+indexLinhaASubstituir);
             conjuntoAssociativo[qualConjunto][indexLinhaASubstituir][0] = bitsTag;
             conjuntoAssociativo[qualConjunto][indexLinhaASubstituir][1] = "1"; //bit validade
             indexLinhaEscolhida = indexLinhaASubstituir;
@@ -157,19 +171,31 @@ public class CacheL1{
         //Primeira palavra que vai na primeira coluna
         // enderecoQueVeio - bitsPalavra(ultimos)
         //Concatenar nesse endereco numBitsForPalavra 0's, se 8 palavras endereco+"000"
-        String palavra = endereco.substring(0, bitsForEndereco-bitsForPalavra);
+        //System.out.println("Palavra Nao ajustada com zeros no fim -> "+endereco);
+        //System.out.println("Num bits para palavra -> "+bitsForPalavra);
+        int aux = bitsForPalavra; if(bitsForPalavra == 0){aux = 1;}
+        String enderecoSemPalavra = endereco.substring(0, bitsForEndereco-aux);
         //Concatear 'bitsForPalavra' * '0',  se 8 palavras endereco+"000"
-        for(int i=0; i<bitsForPalavra;i++){palavra+="0";}
+        for(int i=0; i<aux;i++){enderecoSemPalavra+="0";}
         
         //Transformar a nova palavra no formato StringDecimal
-        palavra = String.valueOf(Integer.parseInt(palavra, 2));
+        //System.out.println("Palavra ajustada com zeros no fim -> "+enderecoSemPalavra);
+        enderecoSemPalavra = String.valueOf(Integer.parseInt(enderecoSemPalavra, 2));
+        //System.out.println("Palavra convertida p/ decimal -> "+enderecoSemPalavra);
 
         //System.out.println("linha escolhida -> "+indexLinhaEscolhida);
+        //System.out.println("Num linhas mem dado -> "+numLinhasMemDado);
         //Escreve o dado na memoria de dados na coluna
         for(int i=0; i<qtdPalavrasNoBloco; i++){
-            memoriaDados[indexLinhaEscolhida][i] = palavra;
-            palavra = String.valueOf(Integer.parseInt(palavra) + 1);
+            memoriaDados[indexLinhaEscolhida][i] = enderecoSemPalavra;
+            enderecoSemPalavra = String.valueOf(Integer.parseInt(enderecoSemPalavra) + 1);
         }
+        //pRINT MEM DADOS
+        System.out.println("mem dados");
+        for(int i=0; i<qtdPalavrasNoBloco; i++){
+            System.out.println(memoriaDados[indexLinhaEscolhida][i]);
+        }
+        System.out.println("**************************************************************");
     }
 
     //Descobrir quantos bits eu preciso para representar certo numero

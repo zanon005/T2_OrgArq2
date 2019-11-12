@@ -7,14 +7,14 @@ public class Randomica implements PoliticaSubstituicao{
     private int linhas;
 
     public Randomica(int linhas){
-        //System.out.println("LINHAS RECEBIDAS ->"+linhas);
+        System.out.println("LINHAS RECEBIDAS ->"+linhas);
         this.linhas = linhas;
     }
 
     //@Override
     public int getIndex(int indexConj) {
         //Gerar num random  0..511
-        int rand = new Random().nextInt(linhas-1) * (indexConj+1);
+        int rand = new Random().nextInt(linhas-1);
         return rand;
     }
 

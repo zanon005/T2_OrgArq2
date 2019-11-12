@@ -22,6 +22,7 @@ public class HierarquiaMem {
     private int numLinhasMemDado;
     private int numConjuntosMemAssociativa;
     private int tamConjuntosMemAssociativa;
+    private int numLinhasConjMemAssociativa;
 
     private CacheL1 l1;
     private CacheL2 l2;
@@ -55,7 +56,7 @@ public class HierarquiaMem {
     public void carregaMemorias(){
         CaracterizacaoCache caracCache = CaracterizacaoCache.getInstance();
         l1 = new CacheL1(0, politica, numWordsByBlock, numLinhasMemDado, 
-        numConjuntosMemAssociativa, tamConjuntosMemAssociativa, numBitsEnderecos);
+        numConjuntosMemAssociativa, tamConjuntosMemAssociativa, numBitsEnderecos, numLinhasConjMemAssociativa );
         l2 = new CacheL2(caracCache.getProbabilityHitL2(), caracCache.getPenaltyL2());
         l3 = new CacheL3(caracCache.getProbabilityHitL3(), caracCache.getPenaltyL3());
         mainMemory = new MainMemory(caracCache.getProbabilityHitMainMemory(), caracCache.getPenaltyMainMemory());
@@ -81,6 +82,7 @@ public class HierarquiaMem {
         //System.out.println("NumConjuntosAssoci.: "+numConjuntosMemAssociativa);
         tamConjuntosMemAssociativa = tamBitsCache / numConjuntosMemAssociativa;
         //System.out.println("TamanhoConjuntos: "+tamConjuntosMemAssociativa);
+        numLinhasConjMemAssociativa = numLinhasMemDado / numConjuntosMemAssociativa;
     }
 
     //Retorna o quanto demorou para devolver o endereco
@@ -157,6 +159,8 @@ public class HierarquiaMem {
     public void setNumLinhasMemDado(int numLinhasMemDado) {this.numLinhasMemDado = numLinhasMemDado;}
 
     public int getNumConjuntosMemAssociativa() {return numConjuntosMemAssociativa;}
+
+    public int getNumLinhasConjMemAssociativa() {return numLinhasConjMemAssociativa;}
 
     public void setNumConjuntosMemAssociativa(int numConjuntosMemAssociativa) {
         this.numConjuntosMemAssociativa = numConjuntosMemAssociativa;
