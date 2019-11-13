@@ -79,7 +79,7 @@ public class TelaCaracCache {
         gridCamposTexto.setPadding(new Insets(25, 25, 25, 25));
 
         gridCamposTexto.add(hbArquivo, 0, 0);
-        Label bytesCache = new Label("Tamanho em bytes da cache:");
+        Label bytesCache = new Label("Tamanho em bits da cache:");
         bytesCache.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
         TextField fieldBytesCache = new TextField();
         gridCamposTexto.add(bytesCache, 0, 1);
@@ -91,7 +91,7 @@ public class TelaCaracCache {
         gridCamposTexto.add(palavrasByBlock, 0, 2);
         gridCamposTexto.add(fieldPalavrasByBlock, 1, 2);
 
-        Label sizeWord = new Label("Tamanho de cada palavra:");
+        Label sizeWord = new Label("Tamanho de cada palavra em bits:");
         sizeWord.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
         TextField fieldSizeWord = new TextField();
         gridCamposTexto.add(sizeWord, 0, 3);
@@ -126,60 +126,84 @@ public class TelaCaracCache {
         buttonGo.setPrefWidth(80);
         buttonGo.setAlignment(Pos.CENTER);
         buttonGo.setOnAction(e -> {
-            try {
-                sizeBytesCache = Integer.parseInt(fieldBytesCache.getText());
-                numPalavrasByBlock = Integer.parseInt(fieldPalavrasByBlock.getText());
-                sizePalavra = Integer.parseInt(fieldSizeWord.getText());
-                numVias = Integer.parseInt(fieldNumVias.getText());
-                numBitsEndereco = Integer.parseInt(fieldBitsEndereco.getText());
-
-                /*System.out.println("ByteCache: "+sizeBytesCache);
-                System.out.println("PalavraBlock: "+numPalavrasByBlock);
-                System.out.println("TamPalavra: "+sizePalavra);
-                System.out.println("vias: "+numVias);
-                System.out.println("bitsEndereco: "+numBitsEndereco);
-                catch (NumberFormatException e1) {
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle("Número digitado nos campos inválido!");
-                alert.setHeaderText("Digite um número válido!");
-                alert.setContentText("Digite valores maiores que zero!, 'numero vias > 0'... etc ");
-                alert.showAndWait();
-                
-                */
-                
-                CaracterizacaoCache caracterizacaoCache = CaracterizacaoCache.getInstance();
-                caracterizacaoCache.setFile(file);
-                caracterizacaoCache.leArquivo();
-                
-                HierarquiaMem hierarquiaMem = HierarquiaMem.getInstance();
-                hierarquiaMem.carregaHierarquiaMem(numBitsEndereco, sizeBytesCache, numPalavrasByBlock, sizePalavra, numVias);
-
-                String politica = boxPolitica.getValue();
-                if(politica.equals("Politica de subs. Randomica")){
-                    politicaEscolhida = new Randomica(hierarquiaMem.getNumLinhasConjMemAssociativa());
-                    hierarquiaMem.setPolitica(politicaEscolhida);
-                }else{
-                    politicaEscolhida = new LFU(hierarquiaMem.getNumLinhasConjMemAssociativa());
-                    hierarquiaMem.setPolitica(politicaEscolhida);
-                }
-                hierarquiaMem.carregaMemorias();
-                
-
-                TelaLog telaLog = new TelaLog(mainStage);
-                Scene scene = telaLog.getTelaCaracProgram();
-                mainStage.setScene(scene);
-            } catch (FileNotInCorrectFormatException e2) {
+            if (this.file == null) {
                 Alert alert = new Alert(AlertType.WARNING);
                 alert.setTitle("Arquivo invlálido!");
                 alert.setHeaderText("O arquivo selecionado não é válido");
-                alert.setContentText("Por favor, selecione um que esteja no formato válido!\n"+
-                "CL2:10:20\n"+
-                "CL3:30:20\n"+
-                "MR:100:40\n"+
-                "HD:1000:100");
+                alert.setContentText("Por favor, selecione um arquivo válido!");
                 alert.showAndWait();
+            }else{
+                try {
+                    sizeBytesCache = Integer.parseInt(fieldBytesCache.getText());
+                    numPalavrasByBlock = Integer.parseInt(fieldPalavrasByBlock.getText());
+                    sizePalavra = Integer.parseInt(fieldSizeWord.getText());
+                    numVias = Integer.parseInt(fieldNumVias.getText());
+                    numBitsEndereco = Integer.parseInt(fieldBitsEndereco.getText());
+    
+                    /*System.out.println("ByteCache: "+sizeBytesCache);
+                    System.out.println("PalavraBlock: "+numPalavrasByBlock);
+                    System.out.println("TamPalavra: "+sizePalavra);
+                    System.out.println("vias: "+numVias);
+                    System.out.println("bitsEndereco: "+numBitsEndereco);
+                    catch (NumberFormatException e1) {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Número digitado nos campos inválido!");
+                    alert.setHeaderText("Digite um número válido!");
+                    alert.setContentText("Digite valores maiores que zero!, 'numero vias > 0'... etc ");
+                    alert.showAndWait();
+                    
+                    */
+                    
+                    CaracterizacaoCache caracterizacaoCache = CaracterizacaoCache.getInstance();
+                    caracterizacaoCache.setFile(file);
+                    caracterizacaoCache.leArquivo();
+                    
+                    HierarquiaMem hierarquiaMem = HierarquiaMem.getInstance();
+                    hierarquiaMem.carregaHierarquiaMem(numBitsEndereco, sizeBytesCache, numPalavrasByBlock, sizePalavra, numVias);
+    
+                    String politica = boxPolitica.getValue();
+                    if(politica.equals("Politica de subs. Randomica")){
+                        politicaEscolhida = new Randomica(hierarquiaMem.getNumLinhasConjMemAssociativa());
+                        hierarquiaMem.setPolitica(politicaEscolhida);
+                    }else{
+                        politicaEscolhida = new LFU();
+                        politicaEscolhida.init(hierarquiaMem.getNumConjuntosMemAssociativa(), 
+                        hierarquiaMem.getNumLinhasConjMemAssociativa());
+                        //System.out.println("POLITICA CRIADA... ATUALIZANDO TESTE");
+                        //politicaEscolhida.atualizaFrequencia(0, 0);
+                        //System.out.println("POLITICA CRIADA... ATUALIZADA!!!!!!!!!!!!!");
+    
+                        hierarquiaMem.setPolitica(politicaEscolhida);
+                    }
+                    hierarquiaMem.carregaMemorias();
+                    
+                    TelaLog telaLog = new TelaLog(mainStage);
+                    Scene scene = telaLog.getTelaCaracProgram();
+                    mainStage.setScene(scene);
+                } catch (FileNotInCorrectFormatException e2) {
+                    Alert alert = new Alert(AlertType.WARNING);
+                    alert.setTitle("Arquivo invlálido!");
+                    alert.setHeaderText("O arquivo selecionado não é válido");
+                    alert.setContentText("Por favor, selecione um que esteja no formato válido!\n"+
+                    "CL2:10:20\n"+
+                    "CL3:30:20\n"+
+                    "MR:100:40\n"+
+                    "HD:1000:100");
+                    alert.showAndWait();
+                } catch (NumberFormatException e3){
+                    Alert alert = new Alert(AlertType.WARNING);
+                    alert.setTitle("Números inválidos!");
+                    alert.setHeaderText("Pelo menos um dos números digitados foi inválido!");
+                    alert.setContentText("Por favor, digite números válidos!\n"+
+                    "Tamanho em bis da cache: 1024\n"+
+                    "Número de palavras no bloco: 4\n"+
+                    "Tamanho em bits de cada palavra: 32\n"+
+                    "Número de vias: 8\n"+
+                    "Tamanho em bits do endereco: 32");
+                }
             }
         });
+            
         grid.add(buttonGo, 0, 3);
 
         cenaCaracCache = new Scene(grid);

@@ -7,11 +7,11 @@ public class HardDrive {
     private int hitCounter;
     //private int missCounter;
     
-    private int probabilityHit;
+    //private int probabilityHit;
     private int missPenalty;
 
     public HardDrive(int probabilityHit, int missPenalty){
-        this.probabilityHit = probabilityHit;
+        //this.probabilityHit = probabilityHit;
         this.missPenalty = missPenalty;
     }
 

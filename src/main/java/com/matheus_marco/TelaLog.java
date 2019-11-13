@@ -12,13 +12,13 @@ import javafx.stage.Stage;
 
 public class TelaLog {
 
-    private Stage mainStage;
+    //private Stage mainStage;
     private Scene cenaTelaLog;
 
     private Processador processador;
 
     public TelaLog(Stage anStage) {
-        this.mainStage = anStage;
+        //this.mainStage = anStage;
     }
 
     public Scene getTelaCaracProgram() {

@@ -22,6 +22,10 @@ public class Randomica implements PoliticaSubstituicao{
         //mapEnderecos.get(conjunto).put(indexEndereco, mapEnderecos.get(conjunto).get(indexEndereco)+1);
     }
 
+    public void init(int numeroDeConjuntos, int numLinhasNosConjuntos){}
+
+    public int getFreq(int qualConjunto, int endereco){return 0;}
+
     public int getLinhas() {
         return linhas;
     }

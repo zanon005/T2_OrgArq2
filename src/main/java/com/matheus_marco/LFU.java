@@ -1,74 +1,65 @@
 package com.matheus_marco;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.ArrayList;
-import java.util.Map.Entry;
-
 public class LFU implements PoliticaSubstituicao{
-    
-    private int linhas;
-    
-    private LinkedList<HashMap<Integer,Integer>> mapEnderecos;
-    private LinkedList<ArrayList<Integer>> enderecos;
-    private HierarquiaMem hm = HierarquiaMem.getInstance();
-    
-    public LFU(int linhas){
-        this.linhas = linhas;
-        this.mapEnderecos = new LinkedList<>();
-        this.enderecos = new LinkedList<>();
 
-        for(int i=0; i< hm.getNumConjuntosMemAssociativa();i++){
-            //HashMap<Integer,Integer> aux = new HashMap<>();
-            ArrayList<Integer> aux = new ArrayList<>(hm.getNumLinhasConjMemAssociativa());
-            System.out.println("TAM lihhas CONJUNTOS ->"+hm.getNumLinhasConjMemAssociativa());
-            for(int j=0; j<hm.getNumLinhasConjMemAssociativa(); j++ ){
-                System.out.println("FOR LFU");
-                aux.add(0);
-            }
-            System.out.println("CRIOU ARRAYLIST");
-            this.enderecos.add(aux);
-            System.out.println("ADICIONOU ARRAYLIST");
+    //private static LFU LFU; 
+    private int numLinhasNosConjuntos;
+    //Lista de conjuntos, lista de (enderecos,frequencia de acesso)
+    private int[][] listEnderecos;
+
+    public LFU(){}
+
+    /*public static LFU getInstance(){
+        if(LFU == null){
+            LFU = new LFU();
+            return LFU;
+        }else{
+            return LFU;
         }
+    }*/
 
-    }
-    
-    public void atualizaFrequencia(int conjunto, int indexEndereco){
-        //mapEnderecos.get(conjunto).put(indexEndereco, (mapEnderecos.get(conjunto).get(indexEndereco)+1) );
-        System.out.println("indexEndereco"+ indexEndereco);
-        System.out.println(enderecos.get(conjunto).get(indexEndereco));
-        int aux =  enderecos.get(conjunto).get(indexEndereco)+1;
-        enderecos.get(conjunto).add(indexEndereco, aux);
-        System.out.println(enderecos.get(conjunto).get(indexEndereco));
-       
-    }
-
-    //@Override
-    public int getIndex(int iConj) {
-        int minFreq = -1;
-        int linhaKey = -1;
-        System.out.println("POLITIA****************************************************");
-        for(int i=0; i< enderecos.get(iConj).size(); i++){
-            if(minFreq < enderecos.get(iConj).get(i)  ){
-                minFreq = enderecos.get(iConj).get(i);
-                linhaKey = i;
+    public void init(int numeroDeConjuntos, int numLinhasNosConjuntos){
+        this.numLinhasNosConjuntos = numLinhasNosConjuntos;
+        this.listEnderecos = new int[numeroDeConjuntos][numLinhasNosConjuntos];
+        //Criando a lista
+        //Para cada conjunto...
+        for(int i=0; i<numeroDeConjuntos; i++){
+            //Inicializando a lista de enderecos
+            for(int j=0; j<numLinhasNosConjuntos; j++){
+                //Frequencia do conjunto 'i', do endereco 'j' inicilizada com zero.
+                listEnderecos[i][j] = 0;
             }
         }
-        System.out.println("LinhaEscolhida->"+linhaKey+" ,Freq->"+minFreq);
-        System.out.println("POLITIA****************************************************");
-        return linhaKey;
     }
-    
-    public int getLinhas() {
-        return linhas;
+
+    //Metodo que atualiza a frequencia de um certo endereco de um certo conjunto.
+    public void atualizaFrequencia(int qualConjunto, int endereco){
+        //System.out.println("METODO POLITICA ATUALIZA!!");
+        //System.out.printf("Incrementando endereco %d, conjunto %d, com freq %d\n", endereco, qualConjunto, listEnderecos[qualConjunto][endereco]);
+        listEnderecos[qualConjunto][endereco]++;
     }
-    
-    public void setLinhas(int linhas) {
-        this.linhas = linhas;
+
+    //Metodo que retorna o endereco que tiver a menor frequencia de acesso de um certo conjunto.
+    public int getIndex(int qualConjunto){
+        int endereco = -1, minFreq = 999999;
+        //Percorrer todo o conjunto procurando o endereco com menor frequencia
+        for(int i=0; i< numLinhasNosConjuntos; i++){
+            //Se a frequencia do endereco q estou iterando for menor que a antiga...
+            if(listEnderecos[qualConjunto][i] < minFreq){
+                endereco = i; minFreq = listEnderecos[qualConjunto][i];
+            }
+        }
+        //Retorna o endereco com a menor frequencia
+        //System.out.printf("Endereco com menor frequencia(%d) do conjunto %d eh: %d\n",minFreq ,qualConjunto, endereco);
+        return endereco;
     }
-    
+
+    public int getFreq(int qualConjunto, int endereco){
+        //System.out.println("OLAAAA");
+        return listEnderecos[qualConjunto][endereco];
+    }
+
     public String toString(){
-        return "LRU";
+        return "LFU";
     }
-    
 }

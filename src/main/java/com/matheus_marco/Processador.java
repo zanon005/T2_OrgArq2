@@ -54,7 +54,7 @@ public class Processador {
             //(EnderecoBinario, EndercoNormal)
             String enderecoBinario = formatStr(strDecimalToBin(endereco));
             int auxAtraso = hm.getEndereco(enderecoBinario, endereco);
-            if(0 == auxAtraso){
+            if(auxAtraso == 0){
                 resultLog.append("Endereco: "+endereco+" -> Hit CacheL1, Atraso = 0"+"\n");
             }else if(cc.getPenaltyL2() == auxAtraso){
                 resultLog.append("Endereco: "+endereco+" -> Hit CacheL2, Atraso = "+auxAtraso+"\n");
@@ -73,23 +73,34 @@ public class Processador {
 
         this.hitsTotais = hm.getHitsL1()+hm.getHitsL2()+hm.getHitsL3()+hm.getHitsMR()+hm.getHitsHD();
         this.missTotais = hm.getMissL1()+hm.getMissL2()+hm.getMissL3()+hm.getMissMR();
-        resultLog.append("************************************************************************");
+        int missL1 = hm.getMissL1(), missL2 = hm.getMissL2(), missL3 = hm.getMissL3(), missMR = hm.getMissMR();
+        int hitsL1 = hm.getHitsL1(), hitsL2 = hm.getHitsL2(), hitsL3 = hm.getHitsL3();
+        int hitsMR = hm.getHitsMR(), hitsHD = hm.getHitsHD();
+        resultLog.append("*********LOG*****************LOG*****************LOG****************");
         resultLog.append("\nTamanho total da memoria cache em bits: "+hm.getTamBitsCache());
-        resultLog.append("\nTamanho total da memoria cache em linhas: "+hm.getNumLinhasMemDados());
         resultLog.append("\nTamanho em bits da palavra: "+hm.getSizeBytesWord());
         resultLog.append("\nNúmero palavras por bloco: "+hm.getNumWordsByBlock());
         resultLog.append("\nTamanho em bits do bloco: "+hm.getTamBlocoMemDado());
         resultLog.append("\nQuantidade de vias: "+hm.getNumVias());
-        resultLog.append("\nPolitica de substituicao: "+hm.getNomePolitica());
+        resultLog.append("\nTamanho total da memoria cache em linhas: "+hm.getNumLinhasMemDados());
         resultLog.append("\nTamanho dos conjuntos associativos em bits: "+hm.getTamConjuntosMemAssociativa());
+        resultLog.append("\nTamanho dos conjuntos associativos em linhas: "+hm.getNumLinhasConjMemAssociativa());
         resultLog.append("\nQuantidade de conjuntos associativos: "+hm.getNumConjuntosMemAssociativa());
+        resultLog.append("\nPolitica de substituicao utilizada: "+hm.getNomePolitica());
         resultLog.append("\nQuantidade de enderecos buscados: "+conteudoArq.size());
         resultLog.append("\nQuantidade de Hits totais: "+this.hitsTotais);
-        resultLog.append("\nPercentual de Hits: "+ ((this.hitsTotais/conteudoArq.size())*100)+"%");
+        resultLog.append("\nPercentual de Hits na CacheL1: "+ ((hitsL1/hitsTotais)*100)+"%");
+        resultLog.append("\nPercentual de Hits na CacheL2: "+ ((hitsL2/hitsTotais)*100)+"%");
+        resultLog.append("\nPercentual de Hits na CacheL3: "+ ((hitsL3/hitsTotais)*100)+"%");
+        resultLog.append("\nPercentual de Hits na CacheMR: "+ ((hitsMR/hitsTotais)*100)+"%");
+        resultLog.append("\nPercentual de Hits na CacheHD: "+ ((hitsHD/hitsTotais)*100)+"%");
         resultLog.append("\nQuantidade de Miss totais: "+this.missTotais);
-        resultLog.append("\nPercentual de Miss: "+((this.missTotais/conteudoArq.size())*100)+"%");
+        resultLog.append("\nPercentual de Miss na CacheL1: "+((missL1/this.missTotais)*100)+"%");
+        resultLog.append("\nPercentual de Miss na CacheL2: "+((missL2/this.missTotais)*100)+"%");
+        resultLog.append("\nPercentual de Miss na CacheL3: "+((missL3/this.missTotais)*100)+"%");
+        resultLog.append("\nPercentual de Miss na CacheMR: "+((missMR/this.missTotais)*100)+"%");
         resultLog.append("\nAtraso total gerado na execucao: "+this.atrasosTotais);
-        resultLog.append("\nTempo medio de acesso: "+(time/1000.0) / (conteudoArq.size()+0.0) );
+        resultLog.append("\nTempo medio de acesso em segundos: "+(time/1000.0) / (conteudoArq.size()+0.0) );
         resultLog.append("\nTempo total da execucao em segundos: "+time/1000.0);
 
         return resultLog.toString();

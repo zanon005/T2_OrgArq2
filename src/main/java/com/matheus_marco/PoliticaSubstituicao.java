@@ -6,6 +6,10 @@ public interface PoliticaSubstituicao{
 
     public String toString();
 
+    public void init(int numeroDeConjuntos, int numLinhasNosConjuntos);
+
     public void atualizaFrequencia(int conjunto, int indexEndereco);
+
+    public int getFreq(int conjunto, int indexEndereco);
     
 }

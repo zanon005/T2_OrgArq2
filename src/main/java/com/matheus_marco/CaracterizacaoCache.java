@@ -44,7 +44,7 @@ public class CaracterizacaoCache {
 	    String line[] =  scanner.nextLine().trim().split(":"); //primeira linha, com "ep: 100" por exemplo.
 	    if(!line[0].equalsIgnoreCase("CL2")){
             /*formato errado de arquivo;*/
-            System.out.println("ERRO CL2");
+            //System.out.println("ERRO CL2");
             throw new FileNotInCorrectFormatException("Arquivo de entrada nao esta no formato correto!");
         }else{
             penaltyL2 = Integer.parseInt(line[1]);
@@ -53,7 +53,7 @@ public class CaracterizacaoCache {
             line = scanner.nextLine().trim().split(":");
             if(!line[0].equalsIgnoreCase("CL3")){
                 /*formato errado de arquivo;*/
-                System.out.println("ERRO CL3");
+                //System.out.println("ERRO CL3");
                 throw new FileNotInCorrectFormatException("Arquivo de entrada nao esta no formato correto!");
             }else{
                 penaltyL3 = Integer.parseInt(line[1]);
@@ -62,7 +62,7 @@ public class CaracterizacaoCache {
                 line = scanner.nextLine().trim().split(":");
                 if(!line[0].equalsIgnoreCase("MR")){
                     /*formato errado de arquivo;*/
-                    System.out.println("ERRO MR");
+                    //System.out.println("ERRO MR");
                     throw new FileNotInCorrectFormatException("Arquivo de entrada nao esta no formato correto!");
                 }else{
                     penaltyMainMemory = Integer.parseInt(line[1]);
@@ -70,7 +70,7 @@ public class CaracterizacaoCache {
                     line = scanner.nextLine().trim().split(":");
                     if(!line[0].equalsIgnoreCase("HD")){
                         /*formato errado de arquivo;*/
-                        System.out.println("ERRO HD");
+                        //System.out.println("ERRO HD");
                         throw new FileNotInCorrectFormatException("Arquivo de entrada nao esta no formato correto!");
                     }else{
                         penaltyHD = Integer.parseInt(line[1]);
