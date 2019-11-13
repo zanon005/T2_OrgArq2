@@ -139,20 +139,12 @@ public class TelaCaracCache {
                     sizePalavra = Integer.parseInt(fieldSizeWord.getText());
                     numVias = Integer.parseInt(fieldNumVias.getText());
                     numBitsEndereco = Integer.parseInt(fieldBitsEndereco.getText());
-    
-                    /*System.out.println("ByteCache: "+sizeBytesCache);
-                    System.out.println("PalavraBlock: "+numPalavrasByBlock);
-                    System.out.println("TamPalavra: "+sizePalavra);
-                    System.out.println("vias: "+numVias);
-                    System.out.println("bitsEndereco: "+numBitsEndereco);
-                    catch (NumberFormatException e1) {
-                    Alert alert = new Alert(AlertType.ERROR);
-                    alert.setTitle("Número digitado nos campos inválido!");
-                    alert.setHeaderText("Digite um número válido!");
-                    alert.setContentText("Digite valores maiores que zero!, 'numero vias > 0'... etc ");
-                    alert.showAndWait();
-                    
-                    */
+
+                    if(sizeBytesCache %2 != 0 ){throw new NumberFormatException();}
+                    if(numPalavrasByBlock %2 != 0 && numPalavrasByBlock !=1 ){throw new NumberFormatException();}
+                    if(sizePalavra %2 != 0 ){throw new NumberFormatException();}
+                    if(numVias %2 != 0 ){throw new NumberFormatException();}
+                    if(numBitsEndereco %2 != 0 ){throw new NumberFormatException();}
                     
                     CaracterizacaoCache caracterizacaoCache = CaracterizacaoCache.getInstance();
                     caracterizacaoCache.setFile(file);
@@ -195,6 +187,8 @@ public class TelaCaracCache {
                     alert.setTitle("Números inválidos!");
                     alert.setHeaderText("Pelo menos um dos números digitados foi inválido!");
                     alert.setContentText("Por favor, digite números válidos!\n"+
+                    "Números PARES >0 pelo menos!\n"+
+                    "É possível ter somente uma palavra, digite '1' no  cambo bits palavra para isso!\n"+
                     "Tamanho em bis da cache: 1024\n"+
                     "Número de palavras no bloco: 4\n"+
                     "Tamanho em bits de cada palavra: 32\n"+

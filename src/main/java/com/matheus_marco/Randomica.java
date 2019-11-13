@@ -7,7 +7,7 @@ public class Randomica implements PoliticaSubstituicao{
     private int linhas;
 
     public Randomica(int linhas){
-        System.out.println("LINHAS RECEBIDAS ->"+linhas);
+        //System.out.println("LINHAS RECEBIDAS ->"+linhas);
         this.linhas = linhas;
     }
 

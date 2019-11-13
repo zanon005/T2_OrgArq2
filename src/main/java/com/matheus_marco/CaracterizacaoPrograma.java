@@ -50,7 +50,7 @@ public class CaracterizacaoPrograma {
     }
     
     public void escreveArquivo(LinkedList<String> arquivo) {
-        File file = new File("enderecos2.txt");
+        File file = new File("enderecos.txt");
         FileWriter fr = null;
         try {
             int numTotalLinhas = 0;
